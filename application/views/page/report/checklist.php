@@ -1,9 +1,13 @@
 <script type="text/javascript">
     $(function () {
-        $('.dataTable').DataTable({
+
+        var oTable =  $('.dataTable').DataTable({
             responsive: true,
             "aaSorting": []
         });
+
+        var allPages = oTable.fnGetNodes();
+
 
         $(document).on('click', '.remove-data' ,function () {
             var id = $(this).data('id');
@@ -201,6 +205,7 @@
 <div class="block-header">
     <h2>
         <a role="button" class="btn btn-success" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
+        <a role="button" href="javascript:void(0);" class="btn btn-primary print_all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">print</i> Print All</a>
     </h2>
 </div>
 
@@ -220,9 +225,12 @@
                 </h2>
             </div>
             <div class="body table-responsive">
-                <table class="table table-bordered table-striped table-hover dataTable">
+                <form>
+                    <table class="table table-bordered table-striped table-hover dataTable">
                     <thead>
                         <tr>
+                            <th><input id="acceptTerms-asdvv" type="checkbox" class="tr_invoice_all">
+                                    <label for="acceptTerms-asdvv"></label>  </th>
                             <th>Report #</th>
                             <th>Driver</th>
                             <th>Trailer Number</th>
@@ -240,6 +248,7 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th></th>
                             <th>Report #</th>
                             <th>Driver</th>
                             <th>Trailer Number</th>
@@ -258,6 +267,8 @@
                     <tbody>
                         <?php foreach ($result as $key => $row): ?>
                             <tr class="_tr_defect_<?php echo $row->id; ?>">
+                                <td> <input id="acceptTerms-asd<?php echo $key; ?>"  value="<?php echo $row->id; ?>" type="checkbox" class="tr_invoice_id">
+                                    <label for="acceptTerms-asd<?php echo $key; ?>"></label> </td>
                                 <td><?php echo $row->id; ?></td>
                                 <td><?php echo $row->name.' '.$row->surname; ?></td>
                                 <td><?php echo $row->trailer_number; ?></td>
@@ -280,6 +291,7 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                </form>
             </div>
         </div>
     </div>
