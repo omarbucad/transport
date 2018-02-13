@@ -38,6 +38,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label for="trailer_number">Trailer Number</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select class="form-control show-tick" name="trailer_number" id="trailer_number">
+                                    <option value="" >-- Please select --</option>
+                                    <?php foreach($trailer_number_list as $key => $row) : ?>
+                                         <option value="<?php echo $row['trailer_number']; ?>" <?php echo custom_set_select('trailer_number', $row['id']); ?>><?php echo $row['trailer_number']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="vehicle">Vehicle</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select class="form-control show-tick" name="vehicle" id="vehicle">
+                                    <option value="" >-- Please select --</option>
+                                    <?php foreach($vehicle_list as $key => $row) : ?>
+                                         <option value="<?php echo $row['vehicle_number']; ?>" <?php echo custom_set_select('vehicle', $row['id']); ?>><?php echo $row['vehicle_number']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button class="btn btn-primary waves-effect" type="submit" name="submit" value="submit"><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> SUBMIT</button>
             </form>    
         <?php else : ?>

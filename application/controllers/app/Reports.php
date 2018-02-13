@@ -20,7 +20,7 @@ class Reports extends CI_Controller {
 
 		$this->data['trailer_number_list'] = $this->trailer->getTrailerNumber($this->session->userdata('id'));
 		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
-		$this->data['driver_list'] = $this->account->getAccountList();
+		$this->data['driver_list'] = $this->account->getAccountList(true);
 	}
 
 	public function index(){
@@ -121,10 +121,23 @@ class Reports extends CI_Controller {
 
 	public function printReport($id){
 
-		$this->data['result'] = $this->report->getReportById($id);
+		if($ids = $this->input->get("id")){
+			foreach($ids as $row){
+
+				$this->data['result'] = $this->report->getReportById($row);
 		
-		echo $this->load->view("page/report/print" , $this->data , true);
-		die();
+				echo $this->load->view("page/report/print" , $this->data , true);
+			
+			}
+			die();
+		}else{
+			$this->data['result'] = $this->report->getReportById($id);
+		
+			echo $this->load->view("page/report/print" , $this->data , true);
+			die();
+		}
+
+		
 		//print_r_die($checklist);
 	}
 

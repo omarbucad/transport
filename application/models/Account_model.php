@@ -226,9 +226,12 @@ class Account_model extends CI_Model {
         return $this->input->post('id', TRUE);
     }
 
-    public function getAccountList(){
+    public function getAccountList($driver = false){
         $this->db->select("id , CONCAT(name, ' ', surname) AS name");
-        return $this->db->where('company_id' , $this->session->userdata('company_id'))->where('status' , 1)->get('accounts')->result();
+        if($driver){
+            $this->db->where("account_type" , "DRIVER");
+        }
+        return $this->db->where('company_id' , $this->session->userdata('company_id'))->where('status' , 1)->order_by("name" , "ASC")->get('accounts')->result();
     }
 
     public function changepassword($id = false){

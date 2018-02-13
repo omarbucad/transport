@@ -800,6 +800,8 @@ class Report_model extends CI_Model {
       return $c;
     }
 
+
+
     private function getDailyReportTrailer($row){
       $from = strtotime(date('Y-m-d', $row->created).' 00:00:00');
       $to = strtotime(date('Y-m-d', $row->created).' 23:59:59');
@@ -807,6 +809,16 @@ class Report_model extends CI_Model {
       $this->db->where("r.created >= " , $from);
       $this->db->where("r.created <= " , $to);
       $this->db->where("r.user_id" , $row->account_id);
+
+      if($this->uri->segment(3) == "daily"){
+          if($this->input->get("vehicle")){
+              $this->db->where("r.vehicle_registration_number" , $this->input->get("vehicle"));
+          }
+
+          if($this->input->get("trailer_number")){
+              $this->db->where("r.trailer_number" , $this->input->get("trailer_number"));
+          }
+      }
 
       $result = $this->db->get("report r")->result();
 
@@ -857,6 +869,8 @@ class Report_model extends CI_Model {
       
       return $b;
     }
+
+
 
     public function getReportById($id , $login = true){
       $this->db->select('r.id , name , surname , r.vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment  , r.job_id , r.report_step , r.report_type , r.trailer_number as trailer_number , r.checklist_type , r.advisory');

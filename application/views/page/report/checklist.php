@@ -1,13 +1,79 @@
 <script type="text/javascript">
     $(function () {
 
-        var oTable =  $('.dataTable').DataTable({
+        var oTable = $('.dt').dataTable({
+            stateSave: true,
+            stateSaveCallback: function(settings,data) {
+                  localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+            },
+            "pageLength": 50 ,
             responsive: true,
-            "aaSorting": []
+            aaSorting : [],
+            drawCallback: function(settings){
+                var api = this.api();
+            }
         });
 
         var allPages = oTable.fnGetNodes();
 
+        $(document).on('click' , '.print_all' , function(){
+            var url = "<?php echo site_url('app/reports/printReport/false'); ?>";
+
+            var id = "";
+            var a = 0;
+
+            $.each( $('.tr_invoice_id' , allPages) , function(k , v){
+                if($(v).is(':checked')){
+                    var i = $(v).val();
+                    if(a == 0){
+                        id += "?id[]="+i;
+                        a++;
+                    }else{
+                        id += "&id[]="+i;
+                    }
+
+                }
+            });
+
+            if(id != ""){
+
+                $.ajax({
+                    url : url+id,
+                    method : "GET" ,
+                    success : function(response){
+                        var newWin = window.open('','Print-Window');
+
+                          newWin.document.open();
+
+                          newWin.document.write('<html><body onload="window.print()">'+response+'</body></html>');
+
+                          newWin.document.close();
+
+                          setTimeout(function(){newWin.close();},10);
+                    }
+                });
+
+            }else{
+                swal("Warning", "No Selected Invoice", "error");
+            }
+
+        });
+
+        $(document).on('click' , '#acceptTerms-asdvv' , function(){
+            var isChecked = $(this).is(":checked");
+
+            $.each( $('.tr_invoice_id' , allPages) , function(k , v){
+                if(isChecked){  
+                    $(v).prop('checked', true);
+                }else{
+
+                    $(v).prop('checked', false);
+                }
+            });
+        });
 
         $(document).on('click', '.remove-data' ,function () {
             var id = $(this).data('id');
@@ -164,7 +230,7 @@
             url : $(this).data("href"),
             method : "GET" ,
             success : function(response){
-                var newWin=window.open('','Print-Window');
+                var newWin = window.open('','Print-Window');
 
                   newWin.document.open();
 
@@ -226,7 +292,7 @@
             </div>
             <div class="body table-responsive">
                 <form>
-                    <table class="table table-bordered table-striped table-hover dataTable">
+                    <table class="table table-bordered table-striped table-hover dt">
                     <thead>
                         <tr>
                             <th><input id="acceptTerms-asdvv" type="checkbox" class="tr_invoice_all">
