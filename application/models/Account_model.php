@@ -47,22 +47,24 @@ class Account_model extends CI_Model {
 
         if($check){
             
-            $result = $this->db->where("id" , $id)->get("accounts")->row();
+            // $result = $this->db->where("id" , $id)->get("accounts")->row();
 
-            $path = FCPATH.'public/upload/accounts/';
+            // $path = FCPATH.'public/upload/accounts/';
 
-            $images = $path.$result->image;
-            $images_thumb = $path.$result->image_thumb;
+            // $images = $path.$result->image;
+            // $images_thumb = $path.$result->image_thumb;
 
-            if(file_exists($images)){
-                unlink($images);  
-            }
-            if(file_exists($images_thumb)){
-                unlink($images_thumb);  
-            }
+            // if(file_exists($images)){
+            //     unlink($images);  
+            // }
+            // if(file_exists($images_thumb)){
+            //     unlink($images_thumb);  
+            // }
 
-            $this->db->where("id" , $id)->delete("accounts");
-            $this->db->where("account_id" , $id)->delete('users_store');
+            // $this->db->where("id" , $id)->delete("accounts");
+            // $this->db->where("account_id" , $id)->delete('users_store');
+
+            $this->db->where("id" , $id)->update("accounts" , ["status" => 0]);
 
             return true;
         }
