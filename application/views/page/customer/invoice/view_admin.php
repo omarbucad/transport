@@ -491,7 +491,6 @@
 .pdfobject-container { height: 500px;}
 .pdfobject { border: 1px solid #666; }
 </style>
-
 <div class="block-header">
     <h2>
         <ol class="breadcrumb" style="padding: 0px;">

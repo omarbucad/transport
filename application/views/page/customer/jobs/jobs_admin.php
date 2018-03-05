@@ -715,17 +715,27 @@
 
                         if(status == 3){
                             var json = jQuery.parseJSON(response);
+  
+                            var segment = "<?php echo $this->uri->segment(2); ?>";
+     
+                            if(segment == "dashboard"){
 
-                            $me = $('#_panel_'+job_id);
-                            var tr = $me.closest("tr").prev();
+                                $me = $('#_ADVISORY_'+id).remove();
 
-                            $me.closest('tr').remove();
-
-                            if(tr.length == 0){
-                                $('.jobstable > tbody').prepend(json.html);
                             }else{
-                                tr.after(json.html).next().find('.collapsed').trigger('click');
+                                $me = $('#_panel_'+job_id);
+                                var tr = $me.closest("tr").prev();
+
+                                $me.closest('tr').remove();
+
+                                if(tr.length == 0){
+                                    $('.jobstable > tbody').prepend(json.html);
+                                }else{
+                                    tr.after(json.html).next().find('.collapsed').trigger('click');
+                                }
                             }
+
+                            
                         }
                     }
                 });

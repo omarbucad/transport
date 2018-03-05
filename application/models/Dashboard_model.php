@@ -294,4 +294,97 @@ class Dashboard_model extends CI_Model {
             "query" => "?".http_build_query(["id" => $a]).'&submit=submit'
         );
     }
+
+
+    public function newGetAllVehicle(){
+        $company_id = $this->session->userdata('company_id');
+       
+        $temp = array();
+
+        $start = strtotime("today midnight");
+        $end = strtotime("today 23:59");
+
+        $report = $this->db->distinct()->select("vehicle_registration_number")->where("created >=" , $start )->where("created <= ", $end )->get("report")->result();
+    
+        foreach($report as $row){
+            if($row->vehicle_registration_number != ""){
+                $temp[] = $row->vehicle_registration_number;
+            }
+        }
+
+        
+        
+            $this->db->select("id , vehicle_number");
+            if($temp){
+                $this->db->where_not_in("vehicle_number" , $temp);
+            }
+            $vehicle = $this->db->where("store_id" , $company_id)->where("status" , 1)->get("vehicle_information")->result();
+        
+        
+
+        $t = array();
+        foreach($vehicle as $v){
+            $t[] = $v->vehicle_number;
+        }
+
+        return [
+            "active" => $temp ,
+            "inactive" => $t
+        ];
+        
+    }
+
+    public function newGetAllTrailer(){
+        $company_id = $this->session->userdata('company_id');
+
+        $temp = array();
+
+        $start = strtotime("today 00:00");
+        $end = strtotime("today 23:59");
+
+        $report = $this->db->distinct()->select("trailer_number")->where("r.created >=" , $start )->where("r.created <= ", $end )->get("report r")->result();
+
+        foreach($report as $row){
+            if($row->trailer_number != ""){
+                $temp[] = $row->trailer_number;
+            }
+        }
+
+        $this->db->select("id , trailer_number , short_trailer_number");
+
+        if($temp){
+            $this->db->where_not_in("trailer_number" , $temp);
+        }
+        $trailer = $this->db->where("store_id" , $company_id)->where("status" , 1)->get("trailer_information")->result();
+        $t = array();
+
+        foreach($trailer as $v){
+            $t[] = $v->trailer_number.' - '.$v->short_trailer_number;
+        }
+
+        return [
+            "active" => $temp ,
+            "inactive" => $t
+        ];
+    }
+
+    public function newGetAll(){
+        return [
+            "vehicle" => $this->newGetAllVehicle(),
+            "trailer" => $this->newGetAllTrailer(),
+            "advisory" => $this->getAdvisory(),
+            "defect"   => $this->getDefectList(4)
+        ];
+    }
+
+    public function getAdvisory(){
+        $company_id = $this->session->userdata('company_id');
+
+        $temp = array();
+
+        $this->db->join("report_status rs" , "rs.report_status_id = r.status_id");
+        $report = $this->db->where("advisory IS NOT NULL" , NULL, FALSE)->where("advisory != " , "''" , FALSE)->where("rs.status !=" , 3)->get("report r")->result();
+
+        return $report;
+    }
 }

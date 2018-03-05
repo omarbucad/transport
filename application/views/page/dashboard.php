@@ -13,6 +13,28 @@
 
     	window.location.replace(url+store_id);
     });
+
+    $(document).on('click' , '.viewModal' , function(){
+            var href = $(this).data('href');
+            var id = $(this).data('id');
+
+            $.ajax({
+                url : href ,
+                method : 'get' ,
+                success : function(response){
+                    var json = jQuery.parseJSON(response);
+                    var modal = $('#defaultModal').modal('show');
+                    var tmp = "";
+                    $.each(json.checklist , function(k , v){
+                        tmp += "<li>"+v+"</li>";
+                    });
+                    modal.find('.modal_defect_container > nav > ol').html(tmp);
+                    modal.find('#defaultModalLabel').html("Report # "+json.id);
+                    modal.find('#modal_report_id').val(json.id);
+                }
+            });
+            
+    });
 </script>
 
 
@@ -81,139 +103,8 @@
 	</div>
 	
 	<?php */ ?>
-	<div class="row clearfix">
-	    <!-- COLLAPSE 1 -->
-		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
-			<div class="info-box-2 bg-light-green hover-zoom-effect" data-toggle="collapse" data-target="#collapse1">
-				<div class="icon">
-					<i class="material-icons">local_shipping</i>
-				</div>
-				<div class="content">
-					<div class="text text-uppercase">Active Trucks</div>
-					<div class="number count-to" data-from="0" data-to="<?php echo $activeTruck; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $activeTruck; ?></div>
-				</div>
-			</div>
-			<div class="row clearfix">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 collapse" id="collapse1">
-					<div class="card">
-						<div class="header bg-light-green">
-							<h2>
-								Active Trucks
-								<small>Daily reports that is completed </small>
-							</h2>
-						</div>
-						<div class="body table-responsive">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Driver</th>
-										<th><nobr>Vehicle Number</nobr></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($activeTruckList as $key => $row) : ?>
-										<tr>
-											<td><?php echo $row->name.' '.$row->surname; ?></td>
-											<td><a href="<?php echo site_url('app/reports/vehicles/'.$row->vehicle_number); ?>"><?php echo $row->vehicle_number; ?></a></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	    <!-- END COLLAPSE 1-->
-	    <!-- COLLAPSE 2-->
-		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
-			<div class="info-box-2 bg-orange hover-zoom-effect" data-toggle="collapse" data-target="#collapse2">
-				<div class="icon">
-					<i class="material-icons">create</i>
-				</div>
-				<div class="content">
-					<div class="text text-uppercase">Incomplete Report</div>
-					<div class="number count-to" data-from="0" data-to="<?php echo $incompleteTruck; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $incompleteTruck; ?></div>
-				</div>
-			</div>
-			<div class="row clearfix">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 collapse" id="collapse2">
-					<div class="card">
-						<div class="header bg-orange">
-							<h2>
-								Incomplete Report
-								<small>Daily reports that is generated but not completed </small>
-							</h2>
-						</div>
-						<div class="body table-responsive">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Driver</th>
-										<th><nobr>Vehicle Number</nobr></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($incompleteTruckList as $key => $row) : ?>
-										<tr>
-											<td><?php echo $row->name.' '.$row->surname; ?></td>
-											<td><a href="<?php echo site_url('app/reports/vehicles/'.$row->vehicle_number); ?>"><?php echo $row->vehicle_number; ?></a></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	    <!-- END COLLAPSE 2-->
-	    <!-- COLLAPSE 3-->
-		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
-			<div class="info-box-2 bg-deep-orange hover-zoom-effect" data-toggle="collapse" data-target="#collapse3">
-				<div class="icon">
-					<i class="material-icons">report_problem</i>
-				</div>
-				<div class="content">
-					<div class="text text-uppercase">Defective Trucks</div>
-					<div class="number count-to" data-from="0" data-to="<?php echo $defectTruck; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $defectTruck; ?></div>
-				</div>
-			</div>
-			<div class="row clearfix">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 collapse" id="collapse3">
-					<div class="card ">
-						<div class="header bg-deep-orange">
-							<h2>
-								Defective Trucks
-								<small>Number of Defect reports</small>
-							</h2>
-						</div>
-						<div class="body table-responsive ">
-							<table class="table">
-								<thead>
-									<tr>
-										<th><nobr>Report #</nobr></th>
-										<th><nobr>Vehicle Number</nobr></th>
-										<th>Status</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($defectTruckList as $key => $row) : ?>
-										<tr>
-											<th scope="row"><?php echo $row->id; ?></th>
-											<td><a href="<?php echo site_url('app/reports/vehicles/'.$row->vehicle_number); ?>"><?php echo $row->vehicle_number; ?></a></td>
-											<td><?php echo $row->status; ?></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	  
-	</div>
+
+	<?php $this->load->view("common/row") ?>
 
 	<div class="block-header">
 		<h2 class="text-uppercase"><?php echo $this->session->userdata('company_name'); ?> JOBS</h2> 

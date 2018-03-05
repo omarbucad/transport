@@ -25,6 +25,7 @@ class Share {
 			$data['type_of_truck'] = $data['type_of_truck_modal'];
 			$data['type_of_artic'] = $CI->dashboard->getArticType();
 			$data['type_of_division'] = $CI->dashboard->getDevisionType();
+			$data['_getAll'] = $CI->dashboard->newGetAll();
 
 			$config["per_page"] =  ($CI->input->get("limit", TRUE)) ? $CI->input->get("limit", TRUE) : 50;
 			$config['reuse_query_string'] = true;

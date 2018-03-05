@@ -540,7 +540,7 @@ if ( ! function_exists('checklist_array'))
                 return "Tachograph/Speedometer Working";
                 break;
             case 16:
-                return "Speed Limiter Working";
+                return "Speed Limiter Sticker Present";
                 break;
             case 17:
                 return "Trailer Coupling and Condition";

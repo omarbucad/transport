@@ -1,8 +1,77 @@
 <script type="text/javascript">
     $(function () {
-        $('.dataTable').DataTable({
+       var oTable = $('.dt').dataTable({
+            stateSave: true,
+            stateSaveCallback: function(settings,data) {
+                  localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+            },
+            "pageLength": 50 ,
             responsive: true,
-            "aaSorting": []
+            aaSorting : [],
+            drawCallback: function(settings){
+                var api = this.api();
+            }
+        });
+
+        var allPages = oTable.fnGetNodes();
+
+        $(document).on('click' , '.print_all' , function(){
+            var url = "<?php echo site_url('app/reports/printReport/false'); ?>";
+
+            var id = "";
+            var a = 0;
+
+            $.each( $('.tr_invoice_id' , allPages) , function(k , v){
+                if($(v).is(':checked')){
+                    var i = $(v).val();
+                    if(a == 0){
+                        id += "?id[]="+i;
+                        a++;
+                    }else{
+                        id += "&id[]="+i;
+                    }
+
+                }
+            });
+
+            if(id != ""){
+
+                $.ajax({
+                    url : url+id,
+                    method : "GET" ,
+                    success : function(response){
+                        var newWin = window.open('','Print-Window');
+
+                          newWin.document.open();
+
+                          newWin.document.write('<html><body onload="window.print()">'+response+'</body></html>');
+
+                          newWin.document.close();
+
+                          setTimeout(function(){newWin.close();},10);
+                    }
+                });
+
+            }else{
+                swal("Warning", "No Selected Invoice", "error");
+            }
+
+        });
+
+        $(document).on('click' , '#acceptTerms-asdvv' , function(){
+            var isChecked = $(this).is(":checked");
+
+            $.each( $('.tr_invoice_id' , allPages) , function(k , v){
+                if(isChecked){  
+                    $(v).prop('checked', true);
+                }else{
+
+                    $(v).prop('checked', false);
+                }
+            });
         });
 
         $(document).on('click', '.remove-data' ,function () {
@@ -170,6 +239,25 @@
                 } 
             });
         });
+
+        $(document).on('click' , '.print-report' , function(){
+
+        $.ajax({
+            url : $(this).data("href"),
+            method : "GET" ,
+            success : function(response){
+                var newWin = window.open('','Print-Window');
+
+                  newWin.document.open();
+
+                  newWin.document.write('<html><body onload="window.print()">'+response+'</body></html>');
+
+                  newWin.document.close();
+
+                  setTimeout(function(){newWin.close();},10);
+            }
+        });
+    });
     });
 </script>
 <style type="text/css">
@@ -197,9 +285,12 @@
     </h2>
 </div>  
 
+<?php $this->load->view("common/row") ?>
+
 <div class="block-header">
     <h2>
         <a role="button" class="btn btn-success" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
+        <a role="button" href="javascript:void(0);" class="btn btn-primary print_all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">print</i> Print All</a>
     </h2>
 </div>
 
@@ -219,9 +310,11 @@
                 </h2>
             </div>
             <div class="body table-responsive">
-                <table class="table table-bordered table-striped table-hover dataTable">
+                <table class="table table-bordered table-striped table-hover dt">
                     <thead>
                         <tr>
+                            <th><input id="acceptTerms-asdvv" type="checkbox" class="tr_invoice_all">
+                                    <label for="acceptTerms-asdvv"></label>  </th>
                             <th>Report #</th>
                             <th>Driver</th>
                             <th>Trailer Number</th>
@@ -237,6 +330,7 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th></th>
                             <th>Report #</th>
                             <th>Driver</th>
                             <th>Trailer Number</th>
@@ -253,6 +347,8 @@
                     <tbody>
                         <?php foreach ($result as $key => $row): ?>
                             <tr class="_tr_defect_<?php echo $row->id; ?>">
+                                <td> <input id="acceptTerms-asd<?php echo $key; ?>"  value="<?php echo $row->id; ?>" type="checkbox" class="tr_invoice_id">
+                                    <label for="acceptTerms-asd<?php echo $key; ?>"></label> </td>
                                 <td><?php echo $row->id; ?></td>
                                 <td><?php echo $row->name.' '.$row->surname; ?></td>
                                 <td><?php echo $row->trailer_number; ?></td>
@@ -268,6 +364,7 @@
                                      <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewReportModal" data-id="<?php echo $row->id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
 
                                     <p><a href="javascript:void(0);" data-id="<?php echo $row->id; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row->id) ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
+                                    <p><a href="javascript:void(0);" data-href="<?php echo site_url('app/reports/printReport/'.$row->id); ?>" class="btn btn-xs btn-primary print-report"><i class="material-icons" style="font-size: 16px;">local_printshop</i> Print Report</a></p>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

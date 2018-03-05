@@ -146,7 +146,7 @@ class Accounts extends CI_Controller {
 	}
 
 	private function noCustomer(){
-		if($this->session->userdata("account_type") == CUSTOMER OR $this->session->userdata("account_type") == OUTSOURCE OR $this->session->userdata("account_type") == WAREHOUSE){
+		if($this->session->userdata("account_type") == CUSTOMER OR $this->session->userdata("account_type") == OUTSOURCE OR $this->session->userdata("account_type") == WAREHOUSE OR $this->session->userdata("account_type") == MECHANIC){
 			redirect('/app/accounts/profile/'.$this->session->userdata("id"), 'refresh');
 		}
 	}

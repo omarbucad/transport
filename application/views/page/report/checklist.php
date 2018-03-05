@@ -267,7 +267,7 @@
         </ol>
     </h2>
 </div>  
-
+<?php $this->load->view("common/row") ?>
 <div class="block-header">
     <h2>
         <a role="button" class="btn btn-success" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>

@@ -503,7 +503,7 @@ class Report_model extends CI_Model {
       if($this->input->get('status') == 'all' || !$this->input->get('status', TRUE)){
           $this->db->where('rs.status != ' , 0 );
       }else{
-          $this->db->where('rs.status ' , $this->input->get('status', TRUE) );
+          //$this->db->where('rs.status ' , $this->input->get('status', TRUE) );
       }
 
       if($this->input->get('trailer_number')){
@@ -528,6 +528,8 @@ class Report_model extends CI_Model {
 
           $this->db->where('r.created >=' , $from);
           $this->db->where('r.created <=' , $to);
+      }else{
+        $this->db->limit(200);
       }
       /* END SEARCH AREA */
 
@@ -539,6 +541,7 @@ class Report_model extends CI_Model {
       }else if($prevNext == "PREV"){
          $result = $this->db->where("r.id < " , $id)->get('report r')->row_array();
       }else{
+
           $result = $this->db->order_by('r.created' , 'DESC')->get('report r')->result();
 
           foreach($result as $key => $row){
@@ -589,6 +592,8 @@ class Report_model extends CI_Model {
 
           $this->db->where('r.created >=' , $from);
           $this->db->where('r.created <=' , $to);
+      }else{
+        $this->db->limit(200);
       }
       /* END SEARCH AREA */
 
@@ -619,7 +624,6 @@ class Report_model extends CI_Model {
         $this->db->select("tl.* , CONCAT(a.name , ' ' , a.surname) as name ");
         $this->db->join("accounts a" , "a.id = tl.account_id");
 
-        if($this->input->get("submit")){
 
             if($this->input->get("date_from") AND $this->input->get("date_to")){
                 $from = strtotime($this->input->get("date_from").' midnight');
@@ -631,12 +635,14 @@ class Report_model extends CI_Model {
             }else if($this->input->get("date_from")){
                 $from = strtotime($this->input->get("date_from").' midnight');
                 $this->db->where("tl.created >=" , $from);
+            }else{
+              $this->db->limit(200);
             }
 
             if($this->input->get("name")){
                 $this->db->where("account_id" , $this->input->get("name"));
             }
-        }
+        
 
         $result = $this->db->order_by("created" , "DESC")->get("timetracker_login tl")->result();
 
