@@ -117,20 +117,30 @@
                 </li>
                 <?php endif; ?>
                 <?php if($this->session->userdata('account_type') != WAREHOUSE) : ?>
-                <li class="<?php if($this->uri->segment(2) == 'reports') echo 'active' ?>" >
-                    <a href="javascript:void(0);" class="menu-toggle">
+                <li class="<?php if($this->uri->segment(2) == 'reports' OR $this->uri->segment(2) == "mechanic") echo 'active' ?>">
+                    <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                         <i class="material-icons">assessment</i>
                         <span>Reports</span>
                     </a>
-                    <ul class="ml-menu">
-                        <li class="<?php if(($this->uri->segment(3) == 'defect' OR $this->uri->segment(3) == 'getReport' OR $this->uri->segment(3) == 'vehicles') AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
-                            <a href="<?php echo site_url('app/reports/defect') ?>">Defect</a>
+                    <ul class="ml-menu" style="display: none;">
+                        <li class="<?php if($this->uri->segment(2) == 'mechanic') echo 'active' ?>">
+                            <a href="<?php echo site_url('app/mechanic') ?>"><span>Mechanic Checklist</span></a>
                         </li>
-                        <li class="<?php if($this->uri->segment(3) == 'checklist' AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
-                            <a href="<?php echo site_url('app/reports/checklist') ?>">Checklist</a>
-                        </li>
-                        <li class="<?php if($this->uri->segment(3) == 'daily' AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
-                            <a href="<?php echo site_url('app/reports/daily') ?>">Daily</a>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                                <span>Driver</span>
+                            </a>
+                            <ul class="ml-menu" style="display: none;">
+                                <li class="<?php if(($this->uri->segment(3) == 'defect' OR $this->uri->segment(3) == 'getReport' OR $this->uri->segment(3) == 'vehicles') AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/reports/defect') ?>">Defect</a>
+                                </li>
+                                <li class="<?php if($this->uri->segment(3) == 'checklist' AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/reports/checklist') ?>">Checklist</a>
+                                </li>
+                                <li class="<?php if($this->uri->segment(3) == 'daily' AND $this->uri->segment(2) == 'reports') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/reports/daily') ?>">Daily</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

@@ -485,6 +485,291 @@ if ( ! function_exists('report_type'))
     }   
 }
 
+if ( ! function_exists('checklist_mechanic'))
+{
+    function checklist_mechanic($index)
+    {
+        switch ($index) {
+
+            //Lubrication: Oil, Water and Fluid Levels
+
+            case 0:
+                return "Grease/oil points";
+            break;
+
+            case 1:
+                return "Check/top up all units. Drain/re-fill if scheduled";
+            break;
+
+            case 2:
+                return "Check/top up batteries & brake fluid reservoir if fitted";
+            break;
+
+            case 3:
+                 return "Check coolant: check Antifreeze SG in winter, corrosion inhibitor in summer";
+            break;
+
+
+            // GROUND LEVEL ITEMS
+
+            case 4:
+                return "Road Wheels and hubs, hub cap , bolts , nuts , studs";
+            break;
+
+            case 5:
+                return "Tyres , size , ply , rating and type";
+            break;
+
+            case 6:
+                return "Tyres , conditon , tread wear , cuts , wall contact on twins";
+            break;
+
+            case 7:
+                return "Sideguards , rear under-run guards and bumper bars";
+            break;
+
+            case 8:
+                return "Spare wheel carrier , security (if fitted)";
+            break;
+
+            case 9:
+                return "Trailer drawing eye or hook , fifth wheel or auto coupling";
+            break;
+
+            case 10:
+                return "Condition of wings , spray suppression equipment";
+            break;
+
+            case 11:
+                return "Cab security (Mountings)";
+            break;
+
+            case 12:
+                return "Cab doors";
+            break;
+
+            case 13:
+                return "Cab floors and steps";
+            break;
+
+            case 14:
+                return "Body , square on chassis , security of fixing to chassis , twistlocks , crane support legs";
+            break;
+
+            case 15:
+                return "Body , soundness , doors , hinges , drop sides , tails boards , tipping gear";
+            break;
+
+            case 16:
+                return "Mirrors , number and condition";
+            break;
+
+            case 17:
+                return "Rear & side markings & reflectors , position and conditon";
+            break;
+
+            case 18:
+                return "Obligatory side lamps , end outline lamps , stop lamps";
+            break;
+
+            case 19:
+                return "Rear lamps ,  rear fog lamps , position and functioning";
+            break;
+
+            case 20:
+                return "Rear and side reflectors , position and condition";
+            break;
+
+            case 21:
+                return "Direction indicators and hazard lamps , colour and functioning";
+            break;
+
+            case 22:
+                return "Headlamps , alignment , position and function";
+            break;
+
+            // CHASSIS
+
+            case 23:
+                return "Condition of chassis , deformatin , cracks , corrosion , bolts , rivets";
+            break;
+
+            // FUEL SUPPLY
+
+            case 24:
+                return "Fuel tanks and pipes , mountings , security , leaks , filler cap";
+            break;
+
+            // ELECTRICAL
+
+            case 25:
+                return "Electrical wiring , condition , security , position , Battery security , leaks";
+            break;
+
+            // BRAKES
+
+            case 26:
+                return "Mechanical brake connectins , wear , chafing , corrosion , back plate security";
+            break;
+
+            case 27:
+                return "Brake wheel units , security , leaks , corrosion , Conditin of linings/pads";
+            break;
+
+            case 28:
+                return "Brake pipes , reservoirs , valves , connections , security , leaks , adjustment of servos , tractor hose couplings , load sensing valve";
+            break;
+
+            // SUSPENSION
+
+            case 29:
+                return "Springs, pins and bushes";
+            break;
+
+            case 30:
+                return "Suspension units , leaf and coil springs , air suspension , radius arms , torsion bars , bonded suspension units";
+            break;
+
+            case 31:
+                return "Attachment of suspension units";
+            break;
+
+            case 32:
+                return "Shock absorbers , security , leaks";
+            break;
+
+            // STEERING
+
+            case 33:
+                return "Axles , stub axles and wheel bearing , wear , fractures";
+            break;
+
+            case 34:
+                return "Steering linkage , wear , fracture , security , no fouling";
+            break;
+
+            case 35:
+                return "Steering box , smoothness of operation , security , wear , road wheels don't foul";
+            break;
+
+            case 36:
+                return "Power steering-security , leaks , fractures-integral , effectiveness";
+            break;
+
+            // CAB ITEMS
+
+            case 37:
+                return "Seat belts (if fitted)";
+            break;
+
+            case 38:
+                return "Driving Seat";
+            break;
+
+            case 39:
+                return "View to front , condition od glass windscreen/windows , height indicator";
+            break;
+
+            case 40:
+                return "Windscreen wiper , washers , pipes and blades";
+            break;
+
+            case 41:
+                return "Speedometer/Tachograph visibility and illumination";
+            break;
+
+            case 42:
+                return "Tachograph operatin & seals for presence , condition and calibration date";
+            break;
+
+            case 43:
+                return "Audible warning/Horn";
+            break;
+
+            case 44:
+                return "Driving controls";
+            break;
+
+            case 45:
+                return "Steering wheel free play , steering column";
+            break;
+
+            case 46:
+                return "Steering wheel , movement between steering column and wheel";
+            break;
+
+            case 47:
+                return "Speed limiter plate/plaque seals and correct operation";
+            break;
+
+            case 48:
+                return "Mechanical hand break";
+            break;
+
+            case 49:
+                return "Service brake pedal";
+            break;
+
+            case 50:
+                return "Hand operated air/vacuum brake control (inspection in cab)";
+            break;
+
+            // TRANSMISSION 
+
+            case 51:
+                return "Transmission shafts , flanges , bolts , bearings , wear";
+            break;
+
+            // ENGINE MOUNTINGS
+
+            case 52:
+                return "Engine mountings , security , deterioration";
+            break;
+
+            // OIL LEAKS
+
+            case 53:
+                return "Oil leaks from assemblies";
+            break;
+
+            // EXHAUST
+
+            case 54:
+                return "Exhaust and silencer emissions check";
+            break;
+
+            // WITH ENGINE RUNNING AND ROAD TEST
+
+            case 55:
+                return "Emission of smoke";
+            break;
+
+            case 56:
+                return "Air/vacuum warning and build up";
+            break;
+
+            case 57:
+                return "Service brake operation (inspection in cab) + ABS light";
+            break;
+
+            // ROAD TEST
+
+            case 58:
+                return "Service brake operation & efficiency *";
+            break;
+            case 59:
+                return "Secondary brake operation & efficiency *";
+            break;
+            case 60:
+                return "Handbrake operation & efficiency *";
+            break;
+            case 61:
+                return "Other Dangerous defects";
+            break;
+        }
+    }   
+}
+
 
 if ( ! function_exists('checklist_array'))
 {
