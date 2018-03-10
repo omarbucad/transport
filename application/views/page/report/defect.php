@@ -361,7 +361,7 @@
                                 <td class="_view_fixed_by"><?php echo $row->fixed_by_name.' '.$row->fixed_by_surname; ?></td>
                                 <td>
 
-                                     <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewReportModal" data-id="<?php echo $row->id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
+                                    <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewReportModal" data-id="<?php echo $row->id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
 
                                     <p><a href="javascript:void(0);" data-id="<?php echo $row->id; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row->id) ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
                                     <p><a href="javascript:void(0);" data-href="<?php echo site_url('app/reports/printReport/'.$row->id); ?>" class="btn btn-xs btn-primary print-report"><i class="material-icons" style="font-size: 16px;">local_printshop</i> Print Report</a></p>
