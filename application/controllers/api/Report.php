@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require(APPPATH.'third_party/pdf/vendor/autoload.php');
+
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+
 class Report extends CI_Controller {
 
 	function __construct( ) {
@@ -81,6 +87,42 @@ class Report extends CI_Controller {
 
 	
 	public function getChecklist(){
-		echo json_encode($this->report->getChecklist());
+		$report = $this->report->getChecklist();
+
+		foreach($report as $key => $r){
+
+			$html2pdf = new HTML2PDF('P','A4','en' , true , 'UTF-8' , $marges = array(10, 10, 10, 10));
+
+			try{
+				$year = date("Y");
+		        $month = date("m");
+		        $folder = FCPATH."/public/upload/driver_pdf/";
+
+		        if (!file_exists($folder)) {
+		            mkdir($folder, 0777, true);
+		            create_index_html($folder);
+		        }
+		        
+		        $filename = $r->id.'_'.str_replace(" ", "_", $r->checklist_type).'_'.str_replace(" ", "_", $r->start_date).'.pdf';
+
+				if( !file_exists($folder.$filename)) {
+
+		        	$path = $folder.'/'.$filename;
+					$html2pdf->writeHTML($this->load->view("common/checklist" , $r , TRUE));
+					$html2pdf->Output($path , 'F');
+		        }
+
+			
+
+				$report[$key]->pdf = site_url("/public/upload/driver_pdf/".$filename);
+				$report[$key]->pdf_name = $filename;
+
+			}catch (Html2PdfException $e) {
+				$formatter = new ExceptionFormatter($e);
+				echo $formatter->getHtmlMessage();
+			}	
+		}
+
+		echo json_encode($report);
 	}
 }

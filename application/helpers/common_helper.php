@@ -447,6 +447,9 @@ if ( ! function_exists('report_type'))
     {
         if($raw){
             switch ($type) {
+                case 4:
+                    return 'No Defect';
+                    break;
                 case 3:
                     return 'Fixed';
                     break;
@@ -465,6 +468,9 @@ if ( ! function_exists('report_type'))
             }
         }else{
             switch ($type) {
+                case 4:
+                    return '<span class="label label-success">No Defect</span>';
+                    break; 
                 case 3:
                     return '<span class="label label-success">Fixed</span>';
                     break;
@@ -783,7 +789,7 @@ if ( ! function_exists('checklist_array'))
                 return "Reflectors/markers/warning devices";
                 break;
             case 2:
-                return "Battery (security/condition)";
+                return "Battery Cover (security/condition";
                 break;
             case 3:
                 return "Mirrors (clean/condition/security)";

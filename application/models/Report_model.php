@@ -548,7 +548,7 @@ class Report_model extends CI_Model {
             $result[$key]->start_date = convert_timezone($row->start_date);
             $result[$key]->end_date = convert_timezone($row->end_date);
             $result[$key]->created = convert_timezone($row->created , true);
-            $result[$key]->status = report_type($row->status);
+            $result[$key]->status = ($row->report_type == "SERVICEABLE") ? report_type(4) : report_type($row->status);
           }
 
         
@@ -558,7 +558,7 @@ class Report_model extends CI_Model {
     }
 
     public function getDefectReportList(){
-      $this->db->select('r.id , a.name , a.surname , trailer_number , r.checklist_type , vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment , a2.name as fixed_by_name , a2.surname as fixed_by_surname');
+      $this->db->select('r.id , a.name , a.surname , trailer_number , r.checklist_type , vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment , a2.name as fixed_by_name , a2.surname as fixed_by_surname , r.report_type');
       $this->db->join('report_status rs', 'rs.report_status_id = r.status_id' , 'left');
       $this->db->join('accounts a2', 'a2.id = rs.account_id');
       $this->db->join('accounts a', 'a.id = r.user_id');
@@ -614,8 +614,9 @@ class Report_model extends CI_Model {
         }
         
         $result[$key]->created = convert_timezone($row->created , true);
-        $result[$key]->status = report_type($row->status);
+        $result[$key]->status = ($row->report_type == "SERVICEABLE") ? report_type(4) : report_type($row->status);
       }
+
 
       return $result;
     }
@@ -972,7 +973,7 @@ class Report_model extends CI_Model {
 
       foreach($status as $key => $row){
         $status[$key]->status = ($login) ? report_type($row->status) : report_type($row->status , true);
-        $status[$key]->created = convert_timezone($row->created);
+        $status[$key]->created = convert_timezone($row->created , true);
       }
 
       $result->status_list = $status;
@@ -1540,8 +1541,10 @@ class Report_model extends CI_Model {
     }
 
     public function getChecklist(){
-        $this->db->select("r.id , r.start_mileage , r.start_date , r.vehicle_registration_number , r.trailer_number , r.end_date , r.status_id , r.checklist_type , rs.status , rs.comment , r.report_type");
+        $this->db->select("r.id , r.start_mileage , r.start_date , r.vehicle_registration_number , r.trailer_number , r.end_date , r.status_id , r.checklist_type , rs.status , rs.comment , r.report_type , r.advisory");
+        $this->db->select("CONCAT(a.name , ' ' , a.surname) as driver_name");
         $this->db->join("report_status rs" , "rs.report_status_id = r.status_id" , "LEFT");
+        $this->db->join("accounts a" , "a.id = r.user_id");
         $this->db->where("user_id" , $this->input->post("id"))->order_by("start_date" , "DESC")->where("report_type !=" , "1");
         $result = $this->db->limit(10)->get("report r")->result();
 
