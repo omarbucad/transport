@@ -648,3 +648,67 @@
         </div>
     </div>
 </div>
+<!-- MECHANIC MODALS-->
+<div class="modal fade" id="ViewMechanicReport" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title" id="defaultModalLabel">Report Information</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mechanicUpdateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mechanicUpdateModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo site_url('app/mechanic/updateChecklistStatus/') ?>" method="POST">
+                    <input type="hidden" name="id" id="mechanic_report_id">
+                    <fieldset class="mechanic_update_container">
+                        <nav>
+                            <ol>
+                                
+                            </ol>
+                        </nav>
+                    </fieldset>
+                    <hr>
+                    <fieldset>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea name="comment" cols="30" rows="3" class="form-control no-resize" id="modal_comment"></textarea>
+                                <label class="form-label">Comment</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <label class="form-label">Report Status</label>
+                            <div class="form-line">
+                                <select class="form-control show-tick" name="status" id="modal_status" required>
+                                    <option value="" >-- Please select --</option>
+                                    <option value="1" >Open</option>
+                                    <option value="2" >Under Maintenance</option>
+                                    <option value="3">Fixed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect pull-left" data-dismiss="modal"><i class="material-icons" style="font-size: 16.5px;">block</i> CLOSE</button>
+                <button type="button" class="btn btn-primary waves-effect statusUpdateBtn"><i class="material-icons" style="font-size: 16.5px;">save</i> SAVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END OF MECHANIC MODAL -->

@@ -1,3 +1,78 @@
+<script type="text/javascript">
+    $(function () {
+        $(document).on('click' , '.viewMechanicModal' , function(){
+            var id = $(this).data("id");
+
+            loadReport(id);
+        });
+
+        function loadReport(id){
+            var modal = $('#ViewMechanicReport').modal("show");
+            var url = "<?php echo site_url("app/mechanic/viewReport/"); ?>"+id;
+
+            $.ajax({
+                url : url ,
+                method : "POST" ,
+                beforeSend : function(){
+                    modal.find('.modal-body').html("LOADING...");
+                },
+                success : function(response){
+                    var json = jQuery.parseJSON(response);
+                    console.log(json);
+                    modal.find('.modal-body').html(json.html);
+
+                }
+            });
+        }
+        $(document).on('click' , '.viewModal' , function(){
+            var href = $(this).data('href');
+            var id = $(this).data('id');
+
+            $.ajax({
+                url : href ,
+                method : 'get' ,
+                success : function(response){
+                    var json = jQuery.parseJSON(response);
+                    var modal = $('#mechanicUpdateModal').modal('show');
+                    var tmp = "";
+                    $.each(json.checklist , function(k, v){
+                            tmp += "<li>"+v.checklist_index+"</li>";
+                    });
+                    modal.find('.mechanic_update_container > nav > ol').html(tmp);
+                    modal.find('#mechanicUpdateModalLabel').html("Report # "+ id);
+                    modal.find('#mechanic_report_id').val(id);
+                }
+            });
+            
+        });
+
+        $(document).on('click' , '.print-report' , function(){
+            $.ajax({
+                url : $(this).data("href"),
+                method : "GET" ,
+                success : function(response){
+                    var newWin = window.open('','Print-Window');
+
+                      newWin.document.open();
+
+                      newWin.document.write('<html><body onload="window.print()">'+response+'</body></html>');
+
+                      newWin.document.close();
+
+                      setTimeout(function(){newWin.close();},10);
+                }
+            });
+        });
+
+    });
+</script>
+<style type="text/css">
+    @media (min-width: 992px) {
+        .modal-lg {
+            width: 80% !important;
+        }
+    }
+</style>
 <div class="block-header">
     <h2>
         <a role="button" class="btn btn-success" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
@@ -17,7 +92,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    DEFECT REPORT LIST
+                    MECHANIC CHECKLIST REPORT
                 </h2>
             </div>
             <div class="body table-responsive">
@@ -72,10 +147,10 @@
                                 <td><?php echo $row->comment; ?></td>
                                 <td><?php echo $row->created; ?></td>
                                 <td>
-                                     <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewReportModal" data-id="<?php echo $row->report_id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
+                                     <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewMechanicModal" data-id="<?php echo $row->report_id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
 
-                                    <p><a href="javascript:void(0);" data-id="<?php echo $row->report_id; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row->report_id) ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
-                                    <p><a href="javascript:void(0);" data-href="<?php echo site_url('app/reports/printReport/'.$row->report_id); ?>" class="btn btn-xs btn-primary print-report"><i class="material-icons" style="font-size: 16px;">local_printshop</i> Print Report</a></p>
+                                    <p><a href="javascript:void(0);" data-id="<?php echo $row->report_id; ?>" data-href="<?php echo site_url('app/mechanic/viewReport/'.$row->report_id.'/true') ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
+                                    <p><a href="javascript:void(0);" data-href="<?php echo site_url('app/mechanic/printReport/'.$row->report_id); ?>" class="btn btn-xs btn-primary print-report"><i class="material-icons" style="font-size: 16px;">local_printshop</i> Print Report</a></p>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

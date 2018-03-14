@@ -29,4 +29,28 @@ class Mechanic extends CI_Controller {
 		
 	}
 
+	public function viewReport($report_id, $defect = false){
+
+		$data['result'] = $this->mechanic->getReportById($report_id);		
+		$data['checklist'] = $this->mechanic->getChecklistMechanicList($report_id, $defect);
+
+		$data['html'] = $this->load->view('page/mechanic/view' , $data , true );
+
+		echo json_encode($data);
+
+	}
+
+	public function printReport($id){
+		$this->data['result'] = $this->mechanic->getReportById($id);		
+		$this->data['checklist'] = $this->mechanic->getChecklistMechanicList($id, false);
+
+		echo $this->load->view("page/mechanic/print" , $this->data , true);
+	}
+
+	public function updateChecklistStatus(){
+		$report_id = $this->input->get("id");
+
+		$this->mechanic->updateChecklistStatus($report_id);
+	}
+
 }
