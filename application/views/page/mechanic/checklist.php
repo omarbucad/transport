@@ -99,13 +99,13 @@
                             $('#mechanicUpdateModal').modal('hide');
                             form[0].reset();
 
-                            location.reload();
                         }
                     });
                    
 
                 } 
             });
+            setTimeout(function(){ location.reload(); }, 2000);
         });
 
     });

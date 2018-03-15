@@ -31,6 +31,10 @@
 				<th style="width: 100px;">Make & Type</th>
 				<td><?php echo $result->make_type; ?></td>
 			</tr>
+			<tr>
+				<th style="width: 100px;">Created</th>
+				<td><?php echo $result->created; ?></td>
+			</tr>
 		</table>
 	</div>
 

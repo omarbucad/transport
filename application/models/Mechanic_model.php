@@ -24,14 +24,17 @@ class Mechanic_model extends CI_Model {
 
 		$result->created = convert_timezone($result->created , true);
 		$result->r_status = report_type($result->r_status);
-		$this->db->select("mechanic_report_status.* , a.* , a.status as account_status, a.created as account_created");
-		$this->db->join("accounts a", "a.id = mechanic_report_status.account_id");
-		$result->mechanic_status = $this->db->where("report_id" , $result->report_id)->get("mechanic_report_status")->result();
+
+		$this->db->select("m.* , a.id, a.name");
+		$this->db->join("accounts a", "a.id = m.account_id");
+		$this->db->where("m.report_id" , $result->report_id);
+		$result->mechanic_status = $this->db->get("mechanic_report_status m")->result();
 
 		foreach ($result->mechanic_status as $key => $value) {
 			$result->mechanic_status[$key]->status = report_type($value->status);
 			$result->mechanic_status[$key]->created = convert_timezone($value->created , true);
 		}
+		
 
 		$result->tyre_pressure = $this->db->where("tyres_id", $result->tyre_pressure)->get("mechanic_tyres mt")->row();
 		$result->thread_depth = $this->db->where("tyres_id", $result->thread_depth)->get("mechanic_tyres mt")->row();
