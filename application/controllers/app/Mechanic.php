@@ -33,6 +33,7 @@ class Mechanic extends CI_Controller {
 
 		$data['result'] = $this->mechanic->getReportById($report_id);		
 		$data['checklist'] = $this->mechanic->getChecklistMechanicList($report_id, $defect);
+		$data['get_form'] = basename($_SERVER['REQUEST_URI']);
 
 		$data['html'] = $this->load->view('page/mechanic/view' , $data , true );
 
@@ -48,9 +49,16 @@ class Mechanic extends CI_Controller {
 	}
 
 	public function updateChecklistStatus(){
-		$report_id = $this->input->get("id");
+		
+		$report_id = $this->input->post("id");
 
-		$this->mechanic->updateChecklistStatus($report_id);
+		if($updated = $this->mechanic->updateChecklistStatus($report_id)){
+
+			echo json_encode(["status" => true , "message" => "Successfully Updated Status!"]);
+		}else{
+
+			echo json_encode(["status" => false , "message" => "Something went wrong."]);
+		}
 	}
 
 }

@@ -56,22 +56,31 @@ class Mechanic_model extends CI_Model {
 		$result = $this->db->get("mechanic_report_checklist")->result();
 
 		foreach ($result as $key => $value) {
-			# code...checklist_mechanic
 			$result[$key]->checklist_index = checklist_mechanic($value->checklist_index);
+			$result[$key]->checklist_timer = convert_timezone($value->checklist_timer, true);
 		}
 
 		return $result;  		
     }
 
     public function updateChecklistStatus($report_id){
-    	print_r_die($this->session->userdata());
-		$this->db->insert("mechanic_report_status", [
+		$insert = $this->db->insert("mechanic_report_status", [
 			"status" => $this->input->post("status"),
 			"comment" => $this->input->post("comment"),
-			// "account_id" => ,
-			// "report_id" => ,
+			"account_id" => $this->session->userdata("user")->user_id,
+			"report_id" => $report_id,
 			"created" => time()
 		]);
+
+		$last = $this->db->insert_id();
+
+		$this->db->where("report_id" , $report_id);
+		
+		$update = $this->db->update("mechanic_report" , [
+			"report_status" => $last
+		]);
+
+		return $update;
     }
 	
 }

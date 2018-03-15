@@ -1,8 +1,6 @@
 
 <style type="text/css">
-	table{
-		border-collapse: collapse;
-	}
+
 	#tyre_table td{
 		text-align: center; 
 		vertical-align: middle;
@@ -10,7 +8,7 @@
 </style>
 <div class="row">
 	<div class="col-lg-5 col-xs-12">
-		<table width="100%" style="margin-bottom: 20px; text-align: left">
+		<table width="100%" style="margin-bottom: 20px; text-align: left;">
 			<tr>
 				<th style="width: 100px;">Report #</th>
 				<td><?php echo $result->report_id; ?></td>
@@ -38,7 +36,7 @@
 
 	<div class="col-lg-8 col-xs-12" style="margin-bottom: 40px;">
 		<div class="table-responsive">
-			<table width="100%" class="table table-bordered" border="1">
+			<table width="100%" class="table table-bordered" border="1" style="border-collapse: collapse;">
 				<thead>
 					<tr>
 						<th style="text-align: center;">Status</th>
@@ -63,7 +61,7 @@
 
 	<div class="col-lg-12 col-xs-12" style="margin-bottom: 40px;">
 		<div class="table-responsive">
-			<table width="100%" class="table table-bordered" border="1">
+			<table width="100%" class="table table-bordered" border="1" style="border-collapse: collapse;">
 				<thead >
 					<tr>
 						<th style="width: 70px">IM No.</th>
@@ -93,10 +91,10 @@
 	</div>
 
 	<div class="col-lg-12 col-xs-12">
-		<div class="table-responsive">
-			<table width="100%" style="margin-bottom: 20px;" border="1" class="table" id="tyre_table">
+		<div class="table-responsive" style="border: 1px solid black;">
+			<table width="100%" style="margin-bottom: 20px;" class="table" id="tyre_table">
 				    <tr>
-				        <th colspan="12" style="text-align: left;padding-left: 5px;">TYRES</th>
+				        <th colspan="12" style="text-align: left;padding-left: 5px; border-bottom: 1px solid black;">TYRES</th>
 				    </tr>
 				    <tr>
 				        <th colspan="6" style="text-align: left !important;padding-left: 5px;">Tread Depth</th>
@@ -104,45 +102,45 @@
 				    </tr>
 				    <tr>
 				        <td rowspan="5" style="width: 50px;"><strong>Front</strong></td>
-				        <td rowspan="2"><?php echo $result->thread_depth->b1; ?></td>
-				        <td rowspan="2"><?php echo $result->thread_depth->b3; ?></td>
-				        <td><?php echo $result->thread_depth->mb1; ?></td>
-				        <td><?php echo $result->thread_depth->mb5; ?></td>
-				        <td style="width: 50px;"><strong>Spare</strong></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->thread_depth->b1; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->thread_depth->b3; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb1; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb5; ?></td>
+				        <td style="width: 40px;"><strong>Spare</strong></td>
 				        <td rowspan="5" style="width: 50px;"><strong>Front</strong></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b1; ?></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b3; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb1; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb5; ?></td>
-				        <td style="width: 50px;"><strong>Spare</strong></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->tyre_pressure->b1; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->tyre_pressure->b3; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb1; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb5; ?></td>
+				        <td style="width: 40px;"><strong>Spare</strong></td>
 				    </tr>
 				    <tr>
-				        <td><?php echo $result->thread_depth->mb2; ?></td>
-				        <td><?php echo $result->thread_depth->mb6; ?></td>
-				        <td rowspan="4"><?php echo ($result->thread_depth->spare_tyre == 'YES') ? "✔" : "✖"; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb2; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb6; ?></td>
-				        <td rowspan="4"><?php echo ($result->tyre_pressure->spare_tyre == 'YES') ? "✔" : "✖"; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb2; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb6; ?></td>
+				        <td rowspan="4" style="border: 1px solid black; width:30px;"><?php echo ($result->thread_depth->spare_tyre == 'YES') ? "✔" : "✖"; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb2; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb6; ?></td>
+				        <td rowspan="4" style="border: 1px solid black; width:30px;"><?php echo ($result->tyre_pressure->spare_tyre == 'YES') ? "✔" : "✖"; ?></td>
 				    </tr>
 				    <tr>
-				        <td colspan="4"></td>
-				        <td colspan="4"></td>
+				        <td colspan="4" style="border: none !important;"></td>
+				        <td colspan="4" style="border: none !important;"></td>
 				    </tr>
 				    <tr>
-				        <td rowspan="2"><?php echo $result->thread_depth->b2; ?></td>
-				        <td rowspan="2"><?php echo $result->thread_depth->b4; ?></td>
-				        <td><?php echo $result->thread_depth->mb3; ?></td>
-				        <td><?php echo $result->thread_depth->mb7; ?></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b2; ?></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b4; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb3; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb7; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->thread_depth->b2; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->thread_depth->b4; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb3; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb7; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->tyre_pressure->b2; ?></td>
+				        <td rowspan="2" style="border: 1px solid #000; width:55px;"><?php echo $result->tyre_pressure->b4; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb3; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb7; ?></td>
 				    </tr>
 				    <tr>
-				        <td><?php echo $result->thread_depth->mb4; ?></td>
-				        <td><?php echo $result->thread_depth->mb8; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb4; ?></td>
-				        <td><?php echo $result->tyre_pressure->mb8; ?></td>				        
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb4; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->thread_depth->mb8; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb4; ?></td>
+				        <td style="border: 1px solid #000;"><?php echo $result->tyre_pressure->mb8; ?></td>				        
 				    </tr>
 			</table>
 		</div>

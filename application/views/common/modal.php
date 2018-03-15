@@ -706,7 +706,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger waves-effect pull-left" data-dismiss="modal"><i class="material-icons" style="font-size: 16.5px;">block</i> CLOSE</button>
-                <button type="button" class="btn btn-primary waves-effect statusUpdateBtn"><i class="material-icons" style="font-size: 16.5px;">save</i> SAVE</button>
+                <button type="button" class="btn btn-primary waves-effect statusMechanicUpdateBtn"><i class="material-icons" style="font-size: 16.5px;">save</i> SAVE</button>
             </div>
         </div>
     </div>

@@ -40,7 +40,7 @@
                     });
                     modal.find('.mechanic_update_container > nav > ol').html(tmp);
                     modal.find('#mechanicUpdateModalLabel').html("Report # "+ id);
-                    modal.find('#mechanic_report_id').val(id);
+                    modal.find('input#mechanic_report_id').val(id);
                 }
             });
             
@@ -51,6 +51,7 @@
                 url : $(this).data("href"),
                 method : "GET" ,
                 success : function(response){
+
                     var newWin = window.open('','Print-Window');
 
                       newWin.document.open();
@@ -61,6 +62,49 @@
 
                       setTimeout(function(){newWin.close();},10);
                 }
+            });
+        });
+
+        $(document).on('click' , '.statusMechanicUpdateBtn' , function(){
+            var form = $(this).closest('.modal').find('form');
+            var url = form.attr('action');
+            var id = form.find('#mechanic_report_id').val();
+            var status = form.find('#modal_status').val();
+            var comment = form.find('#modal_comment').val();
+            var data = {id : id , status:status , comment:comment , from:"report" };
+
+            swal({
+                title: "Are you sure?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url : url ,
+                        method : 'post' ,
+                        data : data ,
+                        success : function(response){
+                            var json = jQuery.parseJSON(response);
+
+                            $("._tr_defect_"+json.report_id).find('._view_status').html(json.status);
+                            $("._tr_defect_"+json.report_id).find('._view_fixed_by').html(json.fixed_by);
+
+                            swal("Updated!", "Successfully Updated" , "success");
+                            $('#mechanicUpdateModal').modal('hide');
+                            form[0].reset();
+
+                            location.reload();
+                        }
+                    });
+                   
+
+                } 
             });
         });
 
@@ -96,7 +140,7 @@
                 </h2>
             </div>
             <div class="body table-responsive">
-                <table class="table table-bordered table-striped table-hover dt">
+                <table class="table table-bordered table-striped table-hover dt" id="mechanic_checklist_report_table">
                     <thead>
                         <tr>
                             <th><input id="acceptTerms-asdvv" type="checkbox" class="tr_invoice_all"><label for="acceptTerms-asdvv"></label>  </th>

@@ -4,6 +4,13 @@
 		text-align: center; 
 		vertical-align: middle;
 	}
+	#tyre_table tbody tr td, #tyre_table tbody tr th {
+	    border: 1px solid #bdbcbc;
+	    color: #777;
+	    border-collapse: separate;
+	    border-spacing: 5px;
+	    padding: 0;
+	}
 </style>
 <div class="row">
 	<div class="col-lg-4 col-xs-12">
@@ -41,7 +48,7 @@
 
 	<div class="col-lg-8 col-xs-12">
 		<div class="table-responsive">
-			<table width="100%" class="table table-bordered">
+			<table width="100%" class="table table-bordered" style="border-collapse: collapse;">
 				<thead>
 					<tr>
 						<th style="text-align: center;">Status</th>
@@ -65,29 +72,32 @@
 	</div>
 
 	<div class="col-lg-12 col-xs-12">
+		<h4>Checklist</h4>
 		<div class="table-responsive">
-			<table width="100%" class="table table-bordered">
+			<table width="100%" class="table">
 				<thead >
 					<tr>
 						<th style="width: 70px">IM No.</th>
 						<th></th>
-						<th style="width: 70px">Serviceable</th>
+						<th style="width: 70px"></th>
 					</tr>
 				</thead>
 				<tbody>
 
 					<?php foreach($checklist as $index => $value): ?>
 					<tr>
-						<td style="text-align: center;"><?php echo $index + 1; ?></td>
-						<td><?php echo $value->checklist_index; ?></td>
 
-						<?php if($value->value == "SERVICEABLE") : ?>
-							<td style="text-align: center;"><?php echo "✔"; ?></td>
-						<?php elseif($value->value == "DEFECT") : ?>
-							<td style="text-align: center;"><?php echo "✖"; ?></td>
-						<?php else: ?>
-							<td style="text-align: center;"><?php echo "-"; ?></td>
-						<?php endif; ?>
+						<td class="<?php echo ($value->value == 'DEFECT') ? 'bg-red' : ''?>" style="text-align: center;"><?php echo $index + 1; ?></td>
+						<td class="<?php echo ($value->value == 'DEFECT') ? 'bg-red' : ''?>"><?php echo $value->checklist_index; ?></td>
+						<td class="<?php echo ($value->value == 'DEFECT') ? 'bg-red' : ''?>" style="text-align: center;"><div class="badge bg-orange"><?php echo ($value->value == 'NA') ? "NA" : $value->checklist_timer; ?></div></td>
+
+						<?php //if($value->value == "SERVICEABLE") : ?>
+							<!-- <td style="text-align: center;"><?php //echo "✔"; ?></td> -->
+						<?php //elseif($value->value == "DEFECT") : ?>
+							<!-- <td style="text-align: center;"><?php //echo "✖"; ?></td> -->
+						<?php //else: ?>
+							<!-- <td style="text-align: center;"><?php //echo "-"; ?></td> -->
+						<?php //endif; ?>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -96,28 +106,26 @@
 	</div>
 
 	<div class="col-lg-12 col-xs-12">
-		<div class="table-responsive">
-			<table width="100%" style="margin-bottom: 20px;" class="table table-bordered" id="tyre_table">
+		<div class="table-responsive" style="border: 1px solid #bdbcbc;padding: 10px;margin-bottom: 20px;">
+			<h5 style="padding-left: 5px;border-bottom: 1px solid #bdbcbc; ">TYRES</h5>
+			<table width="100%" style="border-spacing: 5px;border-collapse: separate;" id="tyre_table">
 				    <tr>
-				        <th colspan="12">TYRES</th>
+				        <th colspan="6" style="text-align: left !important;border:none; padding-left: 15px;">Tread Depth</th>
+				        <th colspan="6" style="text-align: left !important;border:none; padding-left: 15px;">Tyre Pressures</th>
 				    </tr>
 				    <tr>
-				        <th colspan="6" style="text-align: left !important;">Tread Depth</th>
-				        <th colspan="6" style="text-align: left !important;">Tyre Pressures</th>
-				    </tr>
-				    <tr>
-				        <td rowspan="5"><strong>Front</strong></td>
+				        <td rowspan="6" style="width: 70px;border: none;"><strong>Front</strong></td>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->thread_depth->b1; ?></td>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->thread_depth->b3; ?></td>
 				        <td><?php echo $result->thread_depth->mb1; ?></td>
 				        <td><?php echo $result->thread_depth->mb5; ?></td>
-				        <td style="width: 50px;"><strong>Spare</strong></td>
-				        <td rowspan="5"><strong>Front</strong></td>
+				        <td style="width: 35px; border: none;"><strong>Spare</strong></td>
+				        <td rowspan="6" style="width: 70px; border: none;"><strong>Front</strong></td>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->tyre_pressure->b1; ?></td>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->tyre_pressure->b3; ?></td>
 				        <td><?php echo $result->tyre_pressure->mb1; ?></td>
 				        <td><?php echo $result->tyre_pressure->mb5; ?></td>
-				        <td style="width: 50px;"><strong>Spare</strong></td>
+				        <td style="width: 35px; border: none;"><strong>Spare</strong></td>
 				    </tr>
 				    <tr>
 				        <td><?php echo $result->thread_depth->mb2; ?></td>
@@ -128,16 +136,12 @@
 				        <td rowspan="4"><?php echo ($result->tyre_pressure->spare_tyre == 'YES') ? "✔" : "✖"; ?></td>
 				    </tr>
 				    <tr>
-				        <td colspan="4"></td>
-				        <td colspan="4"></td>
-				    </tr>
-				    <tr>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->thread_depth->b2; ?></td>
 				        <td rowspan="2" style="width: 90px;"><?php echo $result->thread_depth->b4; ?></td>
 				        <td><?php echo $result->thread_depth->mb3; ?></td>
 				        <td><?php echo $result->thread_depth->mb7; ?></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b2; ?></td>
-				        <td rowspan="2"><?php echo $result->tyre_pressure->b4; ?></td>
+				        <td rowspan="2" style="width: 90px;"><?php echo $result->tyre_pressure->b2; ?></td>
+				        <td rowspan="2" style="width: 90px;"><?php echo $result->tyre_pressure->b4; ?></td>
 				        <td><?php echo $result->tyre_pressure->mb3; ?></td>
 				        <td><?php echo $result->tyre_pressure->mb7; ?></td>
 				    </tr>
@@ -153,7 +157,7 @@
 </div>
 
 
-<?php if($result->report_images) : ?>
+<?php if(isset($result->report_images)) : ?>
 	<div>
 		<legend>Image</legend>
 		<div class="list-unstyled clearfix">
