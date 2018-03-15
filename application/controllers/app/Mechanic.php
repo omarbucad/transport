@@ -31,7 +31,7 @@ class Mechanic extends CI_Controller {
 
 	public function viewReport($report_id, $defect = false){
 
-		$data['result'] = $this->mechanic->getReportById($report_id);		
+		$data['result'] = $this->mechanic->getReportById($report_id,true);		
 		$data['checklist'] = $this->mechanic->getChecklistMechanicList($report_id, $defect);
 		$data['get_form'] = basename($_SERVER['REQUEST_URI']);
 
@@ -42,7 +42,7 @@ class Mechanic extends CI_Controller {
 	}
 
 	public function printReport($id){
-		$this->data['result'] = $this->mechanic->getReportById($id);		
+		$this->data['result'] = $this->mechanic->getReportById($id, false);		
 		$this->data['checklist'] = $this->mechanic->getChecklistMechanicList($id, false);
 
 		echo $this->load->view("page/mechanic/print" , $this->data , true);

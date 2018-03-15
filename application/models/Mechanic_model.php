@@ -16,7 +16,7 @@ class Mechanic_model extends CI_Model {
 		return $result;
 	}
 
-	public function getReportById($report_id){
+	public function getReportById($report_id, $print = false){
 		$this->db->select(" rs.* , r.* , rs.status as r_status");
 		$this->db->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
 		$this->db->where("r.report_id", $report_id);
@@ -25,15 +25,30 @@ class Mechanic_model extends CI_Model {
 		$result->created = convert_timezone($result->created , true);
 		$result->r_status = report_type($result->r_status);
 
-		$this->db->select("m.* , a.id, a.name");
-		$this->db->join("accounts a", "a.id = m.account_id");
-		$this->db->where("m.report_id" , $result->report_id);
-		$result->mechanic_status = $this->db->get("mechanic_report_status m")->result();
+		if($print){
+			$this->db->select("m.* , a.id, a.name");
+			$this->db->join("accounts a", "a.id = m.account_id");
+			$this->db->where("m.report_id" , $result->report_id);
+			$result->mechanic_status = $this->db->get("mechanic_report_status m")->result();
 
-		foreach ($result->mechanic_status as $key => $value) {
-			$result->mechanic_status[$key]->status = report_type($value->status);
-			$result->mechanic_status[$key]->created = convert_timezone($value->created , true);
+			foreach ($result->mechanic_status as $key => $value) {
+				$result->mechanic_status[$key]->status = report_type($value->status);
+				$result->mechanic_status[$key]->created = convert_timezone($value->created , true);
+			}
 		}
+		else{
+			$this->db->select("m.* , a.id, a.name");
+			$this->db->join("accounts a", "a.id = m.account_id");
+			$this->db->where("m.report_id" , $result->report_id);
+			$this->db->limit(1)->order_by("m.created","DESC");
+			$result->mechanic_status = $this->db->get("mechanic_report_status m")->result();
+
+			foreach ($result->mechanic_status as $key => $value) {
+				$result->mechanic_status[$key]->status = report_type($value->status);
+				$result->mechanic_status[$key]->created = convert_timezone($value->created , true);
+			}
+		}
+		
 		
 
 		$result->tyre_pressure = $this->db->where("tyres_id", $result->tyre_pressure)->get("mechanic_tyres mt")->row();
