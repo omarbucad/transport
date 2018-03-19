@@ -98,6 +98,7 @@
                             swal("Updated!", "Successfully Updated" , "success");
                             $('#mechanicUpdateModal').modal('hide');
                             form[0].reset();
+                            setTimeout(function(){ location.reload(); }, 2000);
 
                         }
                     });
@@ -105,7 +106,7 @@
 
                 } 
             });
-            setTimeout(function(){ location.reload(); }, 2000);
+            
         });
 
     });

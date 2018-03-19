@@ -82,10 +82,11 @@ class Mechanic_model extends CI_Model {
     }
 
     public function updateChecklistStatus($report_id){
+
 		$insert = $this->db->insert("mechanic_report_status", [
 			"status" => $this->input->post("status"),
 			"comment" => $this->input->post("comment"),
-			"account_id" => $this->session->userdata("user")->user_id,
+			"account_id" => $this->session->userdata("id"),
 			"report_id" => $report_id,
 			"created" => time()
 		]);
