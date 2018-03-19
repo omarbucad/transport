@@ -91,14 +91,12 @@
                         data : data ,
                         success : function(response){
                             var json = jQuery.parseJSON(response);
-
-                            $("._tr_defect_"+json.report_id).find('._view_status').html(json.status);
-                            $("._tr_defect_"+json.report_id).find('._view_fixed_by').html(json.fixed_by);
-
+                            var tr = $("#_"+json.data['report_id']);
+                            tr.find(".report_status").html(json.data['status']);
+                           
                             swal("Updated!", "Successfully Updated" , "success");
                             $('#mechanicUpdateModal').modal('hide');
                             form[0].reset();
-                            setTimeout(function(){ location.reload(); }, 2000);
 
                         }
                     });
@@ -178,7 +176,7 @@
                     </tfoot>
                     <tbody>
                         <?php foreach($result as $key => $row) : ?>
-                            <tr>
+                            <tr id="_<?php echo $row->report_id; ?>">
                                 <td></td>
                                 <td><?php echo $row->report_id; ?></td>
                                 <td><?php echo $row->operator; ?></td>
@@ -188,7 +186,7 @@
                                 <td><?php echo $row->fleet_no; ?></td>
                                 <td><?php echo $row->make_type; ?></td>
                                 <td><?php echo $row->report_type; ?></td>
-                                <td><?php echo $row->r_status; ?></td>
+                                <td class="report_status"><?php echo $row->r_status; ?></td>
                                 <td><?php echo $row->comment; ?></td>
                                 <td><?php echo $row->created; ?></td>
                                 <td>

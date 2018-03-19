@@ -54,8 +54,7 @@ class Mechanic extends CI_Controller {
 
 
 		if($updated = $this->mechanic->updateChecklistStatus($report_id)){
-
-			echo json_encode(["status" => true , "message" => "Successfully Updated Status!"]);
+			echo json_encode(["status" => true , "message" => "Successfully Updated Status!", "data" => $updated]);
 		}else{
 
 			echo json_encode(["status" => false , "message" => "Something went wrong."]);

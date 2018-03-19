@@ -99,7 +99,16 @@ class Mechanic_model extends CI_Model {
 			"report_status" => $last
 		]);
 
-		return $update;
+		if($update){
+			$new_status['status'] = report_type($this->input->post("status"));
+			$new_status['report_id'] = $report_id;
+
+			return $new_status;
+		}
+		else{
+			return false;
+		}
+
     }
 	
 }
