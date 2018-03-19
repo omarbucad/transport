@@ -16,15 +16,17 @@ class Mechanic extends CI_Controller {
 		$this->load->model('mechanic_model', 'mechanic');
 
 		$this->data['trailer_number_list'] = $this->trailer->getTrailerNumber($this->session->userdata('id'));
-		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
 		$this->data['driver_list'] = $this->account->getAccountList(true);
+		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
+
+
 	}
 
 	public function index(){
 		$this->data['page'] = "page/mechanic/checklist";
 		$this->data['result'] = $this->mechanic->get_checklist();
 		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
-		
+		$this->data['servicing'] = $this->mechanic->getAllNeedsServicing();
 		$this->load->view('master' , $this->data );
 		
 	}

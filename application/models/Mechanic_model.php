@@ -4,14 +4,55 @@ class Mechanic_model extends CI_Model {
 
 	public function get_checklist(){
 
-		$this->db->select(" rs.* , r.* , rs.status as r_status");
+		$this->db->select(" rs.* , r.* , rs.status as r_status, rs.created as updated_status");
 		$this->db->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
-		$result = $this->db->where("r.status" , "COMPLETE")->order_by("r.created" , "DESC")->get("mechanic_report r")->result();
+		
+		if($report_id = $this->input->get('report_id')){
+			$this->db->where("r.report_id",$report_id);
+		}
+
+		if($fleet_no = $this->input->get('fleet_no')){
+			$this->db->where("r.fleet_no",$fleet_no);
+		}
+
+		if($registration_number = $this->input->get('registration_number')){
+			$this->db->where("r.registration_no",$registration_number);
+		}
+
+		if($report_type = $this->input->get('report_type')){
+			$this->db->where("r.report_type",$report_type);
+		}
+
+		if($this->input->get('date_from') AND $this->input->get('date_to')){
+	          $from = strtotime($this->input->get('date_from').' 00:00 ');
+	          $to = strtotime($this->input->get('date_to').' 23:59 ');
+
+	          $this->db->where('r.created >=' , $from);
+	          $this->db->where('r.created <=' , $to);
+	    }
+
+	    if($this->input->get('status') == "fixed"){
+	    	$this->db->where('rs.status', 3);
+	    }
+
+	    if($this->input->get('status') == "under_maintenance"){
+	    	$this->db->where('rs.status', 2);
+	    }
+
+	    if($this->input->get('status') == "open"){
+	    	$this->db->where('rs.status', 1);
+	    }
+
+	    $result = $this->db->where("r.status" , "COMPLETE")->order_by("r.created" , "DESC")->get("mechanic_report r")->result();
+
 
 		foreach($result as $key => $row){
 			$result[$key]->created = convert_timezone($row->created , true);
 			$result[$key]->r_status = report_type($row->r_status);
+			$result[$key]->updated_status = convert_timezone($row->updated_status,true);
 		}
+
+
 
 		return $result;
 	}
@@ -109,6 +150,28 @@ class Mechanic_model extends CI_Model {
 			return false;
 		}
 
+    }
+
+    public function getAllNeedsServicing(){
+    	$this->db->select(" rs.* , r.* , rs.status as r_status");
+		$this->db->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
+
+
+		$result = $this->db->get("mechanic_report r")->result();
+
+		$needsServicing = array();
+		foreach($result as $key => $row){
+			$datecreated = convert_timezone($result[$key]->created, true);
+			// $monthsix = $datecreated->modify('+6month');
+			$today = date("M d Y");
+			$weekbefore = date("M d Y", strtotime($datecreated ." +6 Month"));
+			$sixthmonth = date("M d Y", strtotime($weekbefore ."-1 week"));
+			if($today == $weekbefore || $today == $sixthmonth){
+				$result[$key]->servicing_date = $sixthmonth;
+				array_push($needsServicing, $row);
+			}
+		}
+		return $needsServicing;
     }
 	
 }
