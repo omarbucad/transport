@@ -5,10 +5,11 @@
 		text-align: center; 
 		vertical-align: middle;
 	}
+
 </style>
 <div class="row">
 	<div class="col-lg-5 col-xs-12">
-		<table width="100%" style="margin-bottom: 20px; text-align: left;">
+		<table width="100%" style="margin-bottom: 10px; text-align: left;">
 			<tr>
 				<th style="width: 100px;">Report #</th>
 				<td><?php echo $result->report_id; ?></td>
@@ -38,7 +39,7 @@
 		</table>
 	</div>
 
-	<div class="col-lg-8 col-xs-12" style="margin-bottom: 40px;">
+	<div class="col-lg-8 col-xs-12" style="margin-bottom: 20px;">
 		<div class="table-responsive">
 			<table width="100%" class="table table-bordered" border="1" style="border-collapse: collapse;">
 				<thead>
@@ -63,7 +64,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-12 col-xs-12" style="margin-bottom: 40px;">
+	<div class="col-lg-12 col-xs-12" style="margin-bottom: 10px; page-break-inside: auto;">
 		<div class="table-responsive">
 			<table width="100%" class="table table-bordered" border="1" style="border-collapse: collapse;">
 				<thead >
@@ -94,9 +95,9 @@
 		</div>
 	</div>
 
-	<div class="col-lg-12 col-xs-12">
+	<div class="col-lg-12 col-xs-12" style="page-break-after: always;">
 		<div class="table-responsive" style="border: 1px solid black;">
-			<table width="100%" style="margin-bottom: 20px;" class="table" id="tyre_table">
+			<table width="100%" style="margin-bottom: 10px;" class="table" id="tyre_table">
 				    <tr>
 				        <th colspan="12" style="text-align: left;padding-left: 5px; border-bottom: 1px solid black;">TYRES</th>
 				    </tr>

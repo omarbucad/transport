@@ -42,10 +42,24 @@ class Mechanic extends CI_Controller {
 	}
 
 	public function printReport($id){
-		$this->data['result'] = $this->mechanic->getReportById($id, false);		
-		$this->data['checklist'] = $this->mechanic->getChecklistMechanicList($id, false);
+		$ids = $this->input->get("id");
+		if( is_array($ids)){
+			foreach($ids as $row){
+				$this->data['result'] = $this->mechanic->getReportById($row, false);	
+				$this->data['checklist'] = $this->mechanic->getChecklistMechanicList($row, false);
 
-		echo $this->load->view("page/mechanic/print" , $this->data , true);
+				echo $this->load->view("page/mechanic/print" , $this->data , true);
+			}
+			die();
+		}
+		else{
+			$this->data['result'] = $this->mechanic->getReportById($id, false);		
+			$this->data['checklist'] = $this->mechanic->getChecklistMechanicList($id, false);
+
+			echo $this->load->view("page/mechanic/print" , $this->data , true);
+			die();
+		}
+		
 	}
 
 	public function updateChecklistStatus(){

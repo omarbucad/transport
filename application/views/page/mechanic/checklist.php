@@ -1,5 +1,24 @@
 <script type="text/javascript">
     $(function () {
+        var oTable = $('.dt').dataTable({
+            stateSave: true,
+            stateSaveCallback: function(settings,data) {
+                  localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+            },
+            "pageLength": 50 ,
+            responsive: true,
+            aaSorting : [],
+            drawCallback: function(settings){
+                var api = this.api();
+            }
+        });
+
+        var allPages = oTable.fnGetNodes();
+
+
         $(document).on('click' , '.viewMechanicModal' , function(){
             var id = $(this).data("id");
 
@@ -107,6 +126,62 @@
             
         });
 
+        $(document).on('click' , '#select_all' , function(){
+            var isChecked = $(this).is(":checked");
+
+            $.each( $('.tr_report_id' , allPages) , function(k , v){
+                if(isChecked){  
+                    $(v).prop('checked', true);
+                }else{
+
+                    $(v).prop('checked', false);
+                }
+            });
+        });
+
+        $(document).on('click' , '.print_all' , function(){
+            var url = "<?php echo site_url('app/mechanic/printReport/false'); ?>";
+
+            var id = "";
+            var a = 0;
+
+            $.each( $('.tr_report_id' , allPages) , function(k , v){
+                if($(v).is(':checked')){
+                    var i = $(v).val();
+                    if(a == 0){
+                        id += "?id[]="+i;
+                        a++;
+                    }else{
+                        id += "&id[]="+i;
+                    }
+
+                }
+            });
+
+            if(id != ""){
+                console.log(id);
+                $.ajax({
+                    url : url+id,
+                    method : "GET" ,
+                    success : function(response){
+                        var newWin = window.open('','Print-Window');
+
+                          newWin.document.open();
+
+                          newWin.document.write('<html><body onload="window.print()">'+response+'</body></html>');
+
+                          newWin.document.close();
+
+                          setTimeout(function(){newWin.close();},10);
+                    }
+                });
+
+            }else{
+                swal("Warning", "No Selected Checklist Report", "error");
+            }
+
+        });
+
     });
 </script>
 <style type="text/css">
@@ -142,7 +217,7 @@
                 <table class="table table-bordered table-striped table-hover dt" id="mechanic_checklist_report_table">
                     <thead>
                         <tr>
-                            <th><input id="acceptTerms-asdvv" type="checkbox" class="tr_invoice_all"><label for="acceptTerms-asdvv"></label>  </th>
+                            <th><input id="select_all" type="checkbox" class="tr_invoice_all"><label for="select_all"></label>  </th>
                             <th>Report #</th>
                             <th>Operator</th>
                             <th>Mileage In</th>
@@ -177,7 +252,8 @@
                     <tbody>
                         <?php foreach($result as $key => $row) : ?>
                             <tr id="_<?php echo $row->report_id; ?>">
-                                <td></td>
+                                <td> <input id="select_all<?php echo $key; ?>"  value="<?php echo $row->report_id; ?>" type="checkbox" class="tr_report_id">
+                                    <label for="select_all<?php echo $key; ?>"></td>
                                 <td><?php echo $row->report_id; ?></td>
                                 <td><?php echo $row->operator; ?></td>
                                 <td><?php echo $row->mileage_in; ?></td>
