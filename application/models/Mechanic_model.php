@@ -158,7 +158,7 @@ class Mechanic_model extends CI_Model {
 
     public function getAllNeedsServicing(){
     	$this->db->select(" rs.* , r.* , rs.status as r_status");
-		$this->db->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
+		$this->db->where("r.status" , "COMPLETE")->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
 
 
 		$result = $this->db->get("mechanic_report r")->result();
@@ -166,10 +166,10 @@ class Mechanic_model extends CI_Model {
 		$needsServicing = array();
 		foreach($result as $key => $row){
 			$datecreated = convert_timezone($result[$key]->created, true);
-			// $monthsix = $datecreated->modify('+6month');
 			$today = date("M d Y");
-			$weekbefore = date("M d Y", strtotime($datecreated ." +6 Month"));
-			$sixthmonth = date("M d Y", strtotime($weekbefore ."-1 week"));
+			
+			$sixthmonth = date("M d Y", strtotime($datecreated ." +6 Month"));
+			$weekbefore = date("M d Y", strtotime($sixthmonth ."-1 week"));
 			if($today == $weekbefore || $today == $sixthmonth){
 				$result[$key]->servicing_date = $sixthmonth;
 				array_push($needsServicing, $row);
