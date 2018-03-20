@@ -191,31 +191,8 @@
         }
     }
 </style>
-<div class="row clearfix">      
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-        <a role="button" class="btn btn-info alert" href="<?php echo site_url('app/mechanic/needServicing'); ?>"><span class="number count-to" data-from="0" data-to="<?php echo count($servicing ); ?>" data-speed="1000" data-fresh-interval="20"><?php echo count($servicing ); ?> </span> NEEDS SERVICING</a>
-    </div>
-</div>
-<div class="block-header">
-    <h2>
-        <span class="pull-right">
-            <a role="button" href="javascript:void(0);" class="btn btn-primary print_all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">print</i> Print All</a>
-        </span>
-        
-        <a role="button" class="btn btn-danger" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=fixed');?>" class="btn btn-success fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Fixed</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=under_maintenance');?>" class="btn btn-warning under_maintenance" ><i class="material-icons" style="position: relative;font-size: 16.5px;">build</i> Under Maintenance</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=open');?>" class="btn btn-primary open" ><i class="material-icons" style="position: relative;font-size: 16.5px;">error_outline</i> Open</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?search=all');?>" class="btn btn-danger all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">donut_large</i> All</a>
 
-    </h2>
-</div>
 
-<div style="margin-bottom: 20px;">
-    <div class="collapse" id="collapseExample">
-        <?php $this->load->view('page/mechanic/search') ?>
-    </div>
-</div>
 
 <!-- Basic Examples -->
 <div class="row clearfix">
@@ -223,69 +200,40 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    MECHANIC CHECKLIST REPORT
+                    NEEDS SERVICING
                 </h2>
             </div>
             <div class="body table-responsive">
                 <table class="table table-bordered table-striped table-hover dt" id="mechanic_checklist_report_table">
                     <thead>
                         <tr>
-                            <th><input id="select_all" type="checkbox" class="tr_invoice_all"><label for="select_all"></label>  </th>
-                            <th>Report #</th>
-                            <th>Operator</th>
-                            <th>Mileage In</th>
-                            <th>Mileage Out</th>
-                            <th>Registration Number</th>
-                            <th>Fleet No</th>
-                            <th>Make and Type</th>
-                            <th>Report Type</th>
-                            <th>Status</th>
-                            <th>Comment</th>
-                            <th>Created</th>
-                            <th>Action</th>
+                            <th><nobr>Report #</nobr></th>
+                            <th><nobr>Registration #</nobr></th>
+                            <th><nobr>Fleet No.</nobr></th>
+                            <th><nobr>Make and Type</nobr></th>
+                            <th><nobr>Servicing Date</nobr></th>
+                            <th><nobr>Action</nobr></th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th></th>
-                            <th>Report #</th>
-                            <th>Operator</th>
-                            <th>Mileage In</th>
-                            <th>Mileage Out</th>
-                            <th>Registration Number</th>
-                            <th>Fleet No</th>
-                            <th>Make and Type</th>
-                            <th>Report Type</th>
-                            <th>Status</th>
-                            <th>Comment</th>
-                            <th>Created</th>
-                            <th>Action</th>
+                            <th><nobr>Report #</nobr></th>
+                            <th><nobr>Registration #</nobr></th>
+                            <th><nobr>Fleet No.</nobr></th>
+                            <th><nobr>Make and Type</nobr></th>
+                            <th><nobr>Servicing Date</nobr></th>
+                            <th><nobr>Action</nobr></th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        <?php foreach($result as $key => $row) : ?>
-                            <tr id="_<?php echo $row->report_id; ?>">
-                                <td> <input id="select_all<?php echo $key; ?>"  value="<?php echo $row->report_id; ?>" type="checkbox" class="tr_report_id">
-                                    <label for="select_all<?php echo $key; ?>"></td>
+                        <?php foreach($servicing as $key => $row) : ?>
+                            <tr id="_SERVICING_<?php echo $row->report_id; ?>">
                                 <td><?php echo $row->report_id; ?></td>
-                                <td><?php echo $row->operator; ?></td>
-                                <td><?php echo $row->mileage_in; ?></td>
-                                <td><?php echo $row->mileage_out; ?></td>
                                 <td><?php echo $row->registration_no; ?></td>
                                 <td><?php echo $row->fleet_no; ?></td>
                                 <td><?php echo $row->make_type; ?></td>
-                                <td><?php echo $row->report_type; ?></td>
-                                <td class="report_status"><?php echo $row->r_status; ?>
-                                    <br><small class="help-block"><?php echo $row->updated_status; ?></small>
-                                </td>
-                                <td><?php echo $row->comment; ?></td>
-                                <td><?php echo $row->created; ?></td>
-                                <td>
-                                     <p><a href="javascript:void(0);" class="btn btn-primary btn-xs viewMechanicModal" data-id="<?php echo $row->report_id; ?>"><i class="material-icons" style="font-size: 16.5px;">visibility</i> View Report</a></p>
-
-                                    <p><a href="javascript:void(0);" data-id="<?php echo $row->report_id; ?>" data-href="<?php echo site_url('app/mechanic/viewReport/'.$row->report_id.'/true') ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
-                                    <p><a href="javascript:void(0);" data-href="<?php echo site_url('app/mechanic/printReport/'.$row->report_id); ?>" class="btn btn-xs btn-primary print-report"><i class="material-icons" style="font-size: 16px;">local_printshop</i> Print Report</a></p>
-                                </td>
+                                <td><?php echo $row->servicing_date; ?></td>
+                                <td><a href="javascript:void(0);" data-id="<?php echo $row->report_id; ?>" class="btn btn-xs btn-info viewMechanicModal">View Previous Report</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

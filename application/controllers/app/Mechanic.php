@@ -77,4 +77,11 @@ class Mechanic extends CI_Controller {
 		}
 	}
 
+	public function needServicing(){
+		$this->data['page'] = "page/mechanic/needs_servicing";
+		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
+		$this->data['servicing'] = $this->mechanic->getAllNeedsServicing();
+		$this->load->view('master' , $this->data );
+	}
+
 }

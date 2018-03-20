@@ -123,8 +123,18 @@
                         <span>Reports</span>
                     </a>
                     <ul class="ml-menu" style="display: none;">
-                        <li class="<?php if($this->uri->segment(2) == 'mechanic') echo 'active' ?>">
-                            <a href="<?php echo site_url('app/mechanic') ?>"><span>Mechanic Checklist</span></a>
+                        <li>
+                            <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
+                                <span>Mechanic Checklist</span>
+                            </a>
+                            <ul class="ml-menu" style="display: none">
+                                <li class="<?php if($this->uri->segment(2) == 'mechanic' && $this->uri->segment(3) == '') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/mechanic/') ?>">Checklist</a>
+                                </li>
+                                <li class="<?php if($this->uri->segment(3) == 'needServicing') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/mechanic/needServicing') ?>">Needs Servicing</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
