@@ -6,42 +6,46 @@ class Mechanic_model extends CI_Model {
 
 		$this->db->select(" rs.* , r.* , rs.status as r_status, rs.created as updated_status");
 		$this->db->join("mechanic_report_status rs"  , "rs.report_status_id = r.report_status");
+
+		if(!$this->input->get('all')){
+
+			if($report_id = $this->input->get('report_id')){
+				$this->db->where("r.report_id",$report_id);
+			}
+
+			if($fleet_no = $this->input->get('fleet_no')){
+				$this->db->where("r.fleet_no",$fleet_no);
+			}
+
+			if($registration_number = $this->input->get('registration_number')){
+				$this->db->where("r.registration_no",$registration_number);
+			}
+
+			if($report_type = $this->input->get('report_type')){
+				$this->db->where("r.report_type",$report_type);
+			}
+
+			if($this->input->get('date_from') AND $this->input->get('date_to')){
+		          $from = strtotime($this->input->get('date_from').' 00:00 ');
+		          $to = strtotime($this->input->get('date_to').' 23:59 ');
+
+		          $this->db->where('r.created >=' , $from);
+		          $this->db->where('r.created <=' , $to);
+		    }
+
+		    if($this->input->get('status') == "fixed"){
+		    	$this->db->where('rs.status', 3);
+		    }
+
+		    if($this->input->get('status') == "under_maintenance"){
+		    	$this->db->where('rs.status', 2);
+		    }
+
+		    if($this->input->get('status') == "open"){
+		    	$this->db->where('rs.status', 1);
+		    }
+		}
 		
-		if($report_id = $this->input->get('report_id')){
-			$this->db->where("r.report_id",$report_id);
-		}
-
-		if($fleet_no = $this->input->get('fleet_no')){
-			$this->db->where("r.fleet_no",$fleet_no);
-		}
-
-		if($registration_number = $this->input->get('registration_number')){
-			$this->db->where("r.registration_no",$registration_number);
-		}
-
-		if($report_type = $this->input->get('report_type')){
-			$this->db->where("r.report_type",$report_type);
-		}
-
-		if($this->input->get('date_from') AND $this->input->get('date_to')){
-	          $from = strtotime($this->input->get('date_from').' 00:00 ');
-	          $to = strtotime($this->input->get('date_to').' 23:59 ');
-
-	          $this->db->where('r.created >=' , $from);
-	          $this->db->where('r.created <=' , $to);
-	    }
-
-	    if($this->input->get('status') == "fixed"){
-	    	$this->db->where('rs.status', 3);
-	    }
-
-	    if($this->input->get('status') == "under_maintenance"){
-	    	$this->db->where('rs.status', 2);
-	    }
-
-	    if($this->input->get('status') == "open"){
-	    	$this->db->where('rs.status', 1);
-	    }
 
 	    $result = $this->db->where("r.status" , "COMPLETE")->order_by("r.created" , "DESC")->get("mechanic_report r")->result();
 

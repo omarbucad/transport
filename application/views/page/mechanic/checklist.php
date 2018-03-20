@@ -252,6 +252,8 @@
         <a role="button" href="<?php echo site_url('app/mechanic/?status=fixed');?>" class="btn btn-success fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Fixed</a>
         <a role="button" href="<?php echo site_url('app/mechanic/?status=under_maintenance');?>" class="btn btn-warning under_maintenance" ><i class="material-icons" style="position: relative;font-size: 16.5px;">build</i> Under Maintenance</a>
         <a role="button" href="<?php echo site_url('app/mechanic/?status=open');?>" class="btn btn-primary open" ><i class="material-icons" style="position: relative;font-size: 16.5px;">error_outline</i> Open</a>
+        <a role="button" href="<?php echo site_url('app/mechanic/?search=all');?>" class="btn btn-danger all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">donut_large</i> All</a>
+
     </h2>
 </div>
 

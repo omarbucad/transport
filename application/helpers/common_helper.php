@@ -481,7 +481,7 @@ if ( ! function_exists('report_type'))
                     return '<span class="label label-info">Open</span>';
                     break;
                 case 0:
-                    return '<span class="label label-blue">New</span>';
+                    return '<span class="label label-primary">New</span>';
                     break;
                 default:
                     # code...
