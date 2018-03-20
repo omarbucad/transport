@@ -168,8 +168,12 @@ class Mechanic_model extends CI_Model {
 
 			$sixthmonth = date("M d Y", strtotime($datecreated ." +6 Month"));
 			$weekbefore = date("M d Y", strtotime($sixthmonth ."-1 week"));
-			if($today == $weekbefore || $today == $sixthmonth){
-				$result[$key]->servicing_date = $sixthmonth;
+
+			$timeleft = (strtotime($sixthmonth) - strtotime($today));
+			$left = "<small class='help-block'>". round((($timeleft/24)/60)/60) . " day(s) left</small>";
+
+			if(strtotime($today) >= strtotime($weekbefore) && strtotime($today) <= strtotime($sixthmonth)){
+				$result[$key]->servicing_date = $sixthmonth . $left;
 				array_push($needsServicing, $row);
 			}
 		}
