@@ -24,6 +24,7 @@ class Report extends CI_Controller {
 		$this->load->model('vehicle_model', 'vehicle');
 		$this->load->model('trailer_model', 'trailer');
 	}
+
 	public function generateId(){
 
 		$last_id = $this->report->first();
@@ -35,9 +36,11 @@ class Report extends CI_Controller {
 		}
 		
 	}
+	
 	public function insertChecklist(){
 		$this->report->second();
 	}
+	
 	public function insertReport(){
 		$this->report->third();
 	}
