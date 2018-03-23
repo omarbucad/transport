@@ -1670,4 +1670,32 @@ class Report_model extends CI_Model {
 
         return $result;
     }
+
+    public function getall_fixed(){
+      $this->db->select("r.* , rs.status as report_status");
+      $this->db->where("rs.status", 3);
+      $this->db->join("report_status rs", "rs.report_status_id = r.status_id");
+      $this->db->limit(10);
+      $totalfixed = $this->db->get("report r")->result();
+
+      foreach ($totalfixed as $key => $value) {
+        $totalfixed[$key]->created = convert_timezone($value->created, true);
+      }
+
+      return $totalfixed;
+    }
+
+    public function getall_undermaintenance(){
+      $this->db->select("r.* , rs.status as report_status");
+      $this->db->where("rs.status", 2);
+      $this->db->join("report_status rs", "rs.report_status_id = r.status_id");
+      $this->db->limit(10);
+      $totalundermaintenance = $this->db->get("report r")->result();
+
+      foreach ($totalundermaintenance as $key => $value) {
+        $totalundermaintenance[$key]->created = convert_timezone($value->created, true);
+      }
+
+      return $totalundermaintenance;
+    }
 }
