@@ -1031,7 +1031,7 @@ class Report_model extends CI_Model {
     public function getVehicleReport($id){
       $skip = ($this->input->post("skip", TRUE)) ? $this->input->post("skip", TRUE) : 0;
 
-      $this->db->select('r.id , name , surname , trailer_number , vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment , r.report_type');
+      $this->db->select('r.id , name , surname , trailer_number , vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment , r.report_type , r.checklist_type');
       $this->db->join('report_status rs', 'rs.report_status_id = r.status_id' , 'left');
       $this->db->join('accounts a', 'a.id = r.user_id');
       
@@ -1039,12 +1039,22 @@ class Report_model extends CI_Model {
 
       foreach($result as $key => $res){
         $checklist = $this->db->select('checklist_index')->where('report_id' , $res->id)->where('value' , 'defect')->get('report_checklist')->result_array();
+
         $result[$key]->checklist = checklist_list($checklist);
+
         $all_checklist = $this->db->select("checklist_index , checklist_timer , value")->where('report_id' , $res->id)->order_by("checklist_index" , "asc")->get('report_checklist')->result_array();
 
         foreach($all_checklist as $k => $r){
-          $all_checklist[$k]['checklist_index'] = checklist_array($r['checklist_index']);
-          $all_checklist[$k]['checklist_timer'] = date('M d Y h:i:s A' , $r['checklist_timer']);
+
+          if($res->checklist_type == "VEHICLE REPORT"){
+              $all_checklist[$k]['checklist_index'] = checklist_array($r['checklist_index']);
+          }else if($res->checklist_type == "MOFFET REPORT"){
+              $all_checklist[$k]['checklist_index'] = checklist_array_moffet($r['checklist_index']);
+          }else{
+              $all_checklist[$k]['checklist_index'] = checklist_array_trailer($r['checklist_index']);
+          }
+
+          $all_checklist[$k]['checklist_timer'] = ($r['value'] == "NA") ? "NA" : date('M d Y h:i:s A' , $r['checklist_timer']);
         }
 
         $result[$key]->all_checklist = $all_checklist;

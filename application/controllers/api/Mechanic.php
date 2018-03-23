@@ -53,7 +53,7 @@ class Mechanic extends CI_Controller {
 					"mechanic_id"		=> $this->input->post("mechanic_id"),
 					"operator"			=> $this->input->post("operator"),
 					"mileage_in"		=> $this->input->post("mileage_in"),
-					"mileage_out"		=> $this->input->post("mileage_out"),
+					//"mileage_out"		=> $this->input->post("mileage_out"),
 					"registration_no"	=> $this->input->post("registration_no"),
 					"fleet_no"			=> $this->input->post("fleet_no"),
 					"make_type"			=> $this->input->post("make_type")
@@ -70,7 +70,7 @@ class Mechanic extends CI_Controller {
 					"mechanic_id"		=> $this->input->post("mechanic_id"),
 					"operator"			=> $this->input->post("operator"),
 					"mileage_in"		=> $this->input->post("mileage_in"),
-					"mileage_out"		=> $this->input->post("mileage_out"),
+					//"mileage_out"		=> $this->input->post("mileage_out"),
 					"registration_no"	=> $this->input->post("registration_no"),
 					"fleet_no"			=> $this->input->post("fleet_no"),
 					"make_type"			=> $this->input->post("make_type"),
@@ -162,7 +162,10 @@ class Mechanic extends CI_Controller {
 
         $this->db->where("report_id" , $report_id)->update("mechanic_report" , [
 			"report_type" => $this->input->post("report_type"),
-			"report_status" => $status_id
+			"report_status" => $status_id ,
+			"road_test_note" => $this->input->post("road_test_note"),
+			"other_notes"	=> $this->input->post("other_note"),
+			"mileage_out"	=> $this->input->post("mileage_out")
 		]);
 
 		echo json_encode(["report_status_id" => $status_id]);
