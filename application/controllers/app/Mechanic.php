@@ -84,4 +84,30 @@ class Mechanic extends CI_Controller {
 		$this->load->view('master' , $this->data );
 	}
 
+	public function emergency_reports(){
+		$this->data['page'] = "page/mechanic/emergency_report";
+		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
+		$this->data['result'] = $this->mechanic->getEmergencyReports();
+		$this->load->view('master' , $this->data );
+	}
+
+	public function view_emergency_report($id){
+		$data['result'] = $this->mechanic->getEmergencyReportById($id);
+		$data['get_form'] = basename($_SERVER['REQUEST_URI']);
+		$data['html'] = $this->load->view('page/mechanic/view_emergency_report' , $data , true );
+
+		echo json_encode($data);
+	}
+
+	public function update_emergency_report($id){
+		$emergency_id = $this->input->post("id");
+
+		if($updated = $this->mechanic->updateEmergencyReport($emergency_id)){
+			echo json_encode(["status" => true , "message" => "Successfully Updated Status!", "data" => $updated]);
+		}else{
+
+			echo json_encode(["status" => false , "message" => "Something went wrong."]);
+		}
+	}
+
 }

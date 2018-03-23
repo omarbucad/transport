@@ -1688,6 +1688,5 @@ class Report_model extends CI_Model {
 
       return $totalfixed;
     }
-
     
 }

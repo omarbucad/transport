@@ -134,6 +134,9 @@
                                 <li class="<?php if($this->uri->segment(3) == 'needServicing') echo 'active' ?>">
                                     <a href="<?php echo site_url('app/mechanic/needServicing') ?>">Needs Servicing</a>
                                 </li>
+                                <li class="<?php if($this->uri->segment(3) == 'emergency_reports') echo 'active' ?>">
+                                    <a href="<?php echo site_url('app/mechanic/emergency_reports') ?>">Emergency Report</a>
+                                </li>
                             </ul>
                         </li>
                         <li>

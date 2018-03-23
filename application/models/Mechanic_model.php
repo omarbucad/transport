@@ -179,5 +179,60 @@ class Mechanic_model extends CI_Model {
 		}
 		return $needsServicing;
     }
+
+    public function getEmergencyReports(){
+
+    	$this->db->select("e.* , a.name, a.surname");
+    	$this->db->join("accounts a","a.id = e.driver_id");
+    	$emergency = $this->db->get("emergency_report e")->result();
+
+    	foreach ($emergency as $key => $value) {
+        	$emergency[$key]->created = convert_timezone($value->created, true);
+    	}
+
+      	return $emergency;
+    }
+
+    public function getEmergencyReportById($id){
+    	$this->db->select("e.* , a.name, a.surname");
+    	$this->db->join("accounts a","a.id = e.driver_id");
+    	$this->db->where("emergency_id", $id);
+    	$emergency = $this->db->get("emergency_report e")->result();
+
+    	foreach ($emergency as $key => $value) {
+    		$emergency[$key]->created = convert_timezone($key->created, true);
+    	}
+
+    	return $emergency;
+    }
+
+    public function getEmergencyReportToday(){
+    	$h = strtotime(date("M d Y"));
+
+    	$this->db->select("e.* , a.name, a.surname");
+    	$this->db->where("created",$h);
+    	$this->db->where("fix_date", 0);
+    	$this->db->join("accounts a","a.id = e.driver_id");
+    	$emergency = $this->db->get("emergency_report e")->result();
+
+    	foreach ($emergency as $key => $value) {
+    		$emergency[$key]->created = convert_timezone($value->created, true);
+    	}
+
+     	return $emergency;
+    }
+
+    public function updateEmergencyReport($id){
+    	$this->db->where("emergency_id", $id);
+    	$emergency = $this->db->update("emergency_report e",[
+    		"fix_date" => strtotime(date("M d Y H:i:s"))
+    	]);
+
+    	if($emergency){
+    		return true;
+    	}else{
+    		return false;
+    	}    	
+    }
 	
 }
