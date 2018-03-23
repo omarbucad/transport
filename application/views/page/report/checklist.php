@@ -202,23 +202,25 @@
                 closeOnCancel: true
             }, function (isConfirm) {
                 if (isConfirm) {
-                    $.ajax({
-                        url : url ,
-                        method : 'post' ,
-                        data : data ,
-                        success : function(response){
-                            var json = jQuery.parseJSON(response);
+                    if(status == ""){
+                        swal("Incomplete", "Status required" , "error");
+                    }else{
+                        $.ajax({
+                            url : url ,
+                            method : 'post' ,
+                            data : data ,
+                            success : function(response){
+                                var json = jQuery.parseJSON(response);
 
-                            $("._tr_defect_"+json.report_id).find('._view_status').html(json.status);
-                            $("._tr_defect_"+json.report_id).find('._view_fixed_by').html(json.fixed_by);
+                                $("._tr_defect_"+json.report_id).find('._view_status').html(json.status);
+                                $("._tr_defect_"+json.report_id).find('._view_fixed_by').html(json.fixed_by);
 
-                            swal("Updated!", "Successfully Updated" , "success");
-                            $('#defaultModal').modal('hide');
-                            form[0].reset();
-                        }
-                    });
-                   
-
+                                swal("Updated!", "Successfully Updated" , "success");
+                                $('#defaultModal').modal('hide');
+                                form[0].reset();
+                            }
+                        });
+                    }
                 } 
             });
         });
