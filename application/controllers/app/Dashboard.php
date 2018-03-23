@@ -16,10 +16,12 @@ class Dashboard extends CI_Controller {
 		}
 
 		$this->load->model('invoice_model', 'invoice');
+		$this->load->model('report_model', 'report');
 
 		$this->store_list = $this->dashboard->getStoreList();
 		$this->first_store_id = $this->dashboard->getFirstStore($this->store_list);
 		$this->data['store_list'] = $this->store_list;
+		$this->data['totalfixedundermaintenance'] = $this->report->all_fixed_undermaintenance();
 		
 	}
 

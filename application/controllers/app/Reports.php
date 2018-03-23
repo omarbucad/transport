@@ -22,8 +22,8 @@ class Reports extends CI_Controller {
 		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
 		$this->data['driver_list'] = $this->account->getAccountList(true);
 
-		$this->data['totalfixed'] = $this->report->getall_fixed();
-		$this->data['totalundermaintenance'] = $this->report->getall_undermaintenance();
+		$this->data['totalfixedundermaintenance'] = $this->report->all_fixed_undermaintenance();
+
 	}
 
 	public function index(){
