@@ -1556,7 +1556,7 @@ class Report_model extends CI_Model {
         $this->db->join("report_status rs" , "rs.report_status_id = r.status_id" , "LEFT");
         $this->db->join("accounts a" , "a.id = r.user_id");
         $this->db->where("user_id" , $this->input->post("id"))->order_by("start_date" , "DESC")->where("report_type !=" , "1");
-        $result = $this->db->limit(10)->get("report r")->result();
+        $result = $this->db->limit(20)->get("report r")->result();
 
         foreach($result as $key => $row){
           $result[$key]->start_date = convert_timezone($row->start_date);

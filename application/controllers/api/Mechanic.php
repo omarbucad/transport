@@ -141,24 +141,37 @@ class Mechanic extends CI_Controller {
 
         }
 
-        if($this->input->post("report_type") == "DEFECT"){
+        $c = $this->db->where("report_id" , $this->input->post("report_id"))->get("mechanic_report_status")->row();
 
-            $this->db->insert("mechanic_report_status" , [
-            	"status" => 1 ,
-	            "account_id" => $this->input->post('mechanic_id'),
-	            "report_id" => $this->input->post('report_id'),
-	            "created" => time()
-            ]);
+        if(!$c){
+
+        	if($this->input->post("report_type") == "DEFECT"){
+
+	            $this->db->insert("mechanic_report_status" , [
+	            	"status" => 1 ,
+		            "account_id" => $this->input->post('mechanic_id'),
+		            "report_id" => $this->input->post('report_id'),
+		            "created" => time()
+	            ]);
+
+	        }else{
+	        	
+	        	$this->db->insert("mechanic_report_status" , [
+	            	"status" => 0 ,
+		            "account_id" => $this->input->post('mechanic_id'),
+		            "report_id" => $this->input->post('report_id'),
+		            "created" => time()
+	            ]);
+	        }
+
+	        $status_id = $this->db->insert_id();
+
         }else{
-        	$this->db->insert("mechanic_report_status" , [
-            	"status" => 0 ,
-	            "account_id" => $this->input->post('mechanic_id'),
-	            "report_id" => $this->input->post('report_id'),
-	            "created" => time()
-            ]);
-        }
 
-        $status_id = $this->db->insert_id();
+        	$status_id = $c->report_status_id;
+
+        }
+        
 
         $this->db->where("report_id" , $report_id)->update("mechanic_report" , [
 			"report_type" => $this->input->post("report_type"),
