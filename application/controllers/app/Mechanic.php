@@ -19,7 +19,6 @@ class Mechanic extends CI_Controller {
 		$this->data['driver_list'] = $this->account->getAccountList(true);
 		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
 
-
 	}
 
 	public function index(){
@@ -27,6 +26,7 @@ class Mechanic extends CI_Controller {
 		$this->data['result'] = $this->mechanic->get_checklist();
 		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
 		$this->data['servicing'] = $this->mechanic->getAllNeedsServicing();
+		$this->data['emergency_report'] = $this->mechanic->getEmergencyReportToday();
 		$this->load->view('master' , $this->data );
 		
 	}
@@ -93,8 +93,6 @@ class Mechanic extends CI_Controller {
 
 	public function view_emergency_report($id){
 		$data['result'] = $this->mechanic->getEmergencyReportById($id);
-		$data['get_form'] = basename($_SERVER['REQUEST_URI']);
-		$data['html'] = $this->load->view('page/mechanic/view_emergency_report' , $data , true );
 
 		echo json_encode($data);
 	}

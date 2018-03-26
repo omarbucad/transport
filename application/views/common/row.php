@@ -175,7 +175,7 @@
             </div>
             <div class="content">
                 <div class="text text-uppercase" style="font-size: 12px; margin-top: 5px">Emergency Report</div>
-                <div class="number count-to" data-from="0" data-to="<?php echo count($totalfixedundermaintenance) ; ?>" data-speed="1000" data-fresh-interval="20"><?php echo count($totalfixedundermaintenance) ; ?></div>
+                <div class="number count-to" data-from="0" data-to="<?php echo count($emergency_report); ?>" data-speed="1000" data-fresh-interval="20"><?php echo count($emergency_report) ; ?></div>
             </div>
         </div>
         
@@ -227,7 +227,7 @@
                 <div class="card ">
                     <div class="header bg-red">
                         <h2>
-                            Fixed and Under Maintenance
+                            Emergency Report
                         </h2>
                     </div>
                     <div class="body table-responsive ">

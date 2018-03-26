@@ -194,7 +194,11 @@
         }
     }
 </style>
-<div class="">      
+<div class="">    
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <a role="button" class="alert-link" href="<?php echo site_url('app/mechanic/emergency_reports'); ?>" style="text-decoration: none;"><h4 style="margin-bottom: 0;"><span class="number count-to" data-from="0" data-to="<?php echo count($emergency_report ); ?>" data-speed="1000" data-fresh-interval="20"><?php echo count($emergency_report ); ?> </span> EMERGENCY REPORT</h4></a>
+    </div>  
     <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <a role="button" class="alert-link" href="<?php echo site_url('app/mechanic/needServicing'); ?>" style="text-decoration: none;"><h4 style="margin-bottom: 0;"><span class="number count-to" data-from="0" data-to="<?php echo count($servicing ); ?>" data-speed="1000" data-fresh-interval="20"><?php echo count($servicing ); ?> </span> NEEDS SERVICING</h4></a>

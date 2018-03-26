@@ -17,11 +17,13 @@ class Reports extends CI_Controller {
 		$this->load->model('trailer_model', 'trailer');
 		$this->load->model('report_model', 'report');
 		$this->load->model('account_model', 'account');
+		$this->load->model('mechanic_model', 'mechanic');
 
 		$this->data['trailer_number_list'] = $this->trailer->getTrailerNumber($this->session->userdata('id'));
 		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
 		$this->data['driver_list'] = $this->account->getAccountList(true);
 
+		$this->data['emergency_report'] = $this->mechanic->getEmergencyReportToday();
 		$this->data['totalfixedundermaintenance'] = $this->report->all_fixed_undermaintenance();
 
 	}
