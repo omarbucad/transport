@@ -43,6 +43,14 @@
 				<th style="width: 100px;">Make & Type</th>
 				<td><?php echo $result->make_type; ?></td>
 			</tr>
+			<tr>
+				<th style="width: 100px;">Road Test Note</th>
+				<td><?php echo $result->road_test_note; ?></td>
+			</tr>
+			<tr>
+				<th style="width: 100px;">Other Notes</th>
+				<td><?php echo $result->other_notes; ?></td>
+			</tr>
 		</table>
 	</div>
 

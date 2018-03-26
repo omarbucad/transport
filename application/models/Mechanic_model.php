@@ -194,14 +194,15 @@ class Mechanic_model extends CI_Model {
     }
 
     public function getEmergencyReportById($id){
-    	$this->db->select("e.* , a.name, a.surname");
+    	$this->db->select(" a.name, a.surname, e.*");
     	$this->db->join("accounts a","a.id = e.driver_id");
     	$this->db->where("e.emergency_id", $id);
-    	$emergency = $this->db->get("emergency_report e")->result();
+    	$emergency = $this->db->get("emergency_report e")->row();
 
-    	foreach ($emergency as $key => $value) {
-    		$emergency[$key]->created = convert_timezone($value->created, true);
-    	}
+    	$emergency->images = $this->db->where("emergency_id", $id)->get("emergency_report_images")->result();
+
+    	//print_r_die($emergency);
+   		$emergency->created = convert_timezone($emergency->created, true);    	
 
     	return $emergency;
     }
