@@ -236,9 +236,10 @@
                                 <tr>
                                     <th><nobr>Emergency #</nobr></th>
                                     <th><nobr>Driver</nobr></th>
-                                    <th><nobr>Longitude</nobr></th>
-                                    <th><nobr>Latitude</nobr></th>
                                     <th><nobr>Comment</nobr></th>
+                                    <th><nobr>Status</nobr></th>
+                                    <th><nobr>Latitude</nobr></th>
+                                    <th><nobr>Created</nobr></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

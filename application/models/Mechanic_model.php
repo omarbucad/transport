@@ -238,10 +238,10 @@ class Mechanic_model extends CI_Model {
     }
 
     public function getEmergencyReportToday(){
-    	$h = strtotime(date("M d Y"));
 
     	$this->db->select("e.* , a.name, a.surname");
-    	$this->db->where("e.created",$h);
+    	$this->db->where("e.created >=", strtotime("today midnight"));
+    	$this->db->where("e.created <=", strtotime("tomorrow midnight -1 second"));
     	$this->db->where("e.fix_date", 0);
     	$this->db->join("accounts a","a.id = e.driver_id");
     	$emergency = $this->db->get("emergency_report e")->result();
