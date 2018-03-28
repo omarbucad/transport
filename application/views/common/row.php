@@ -208,7 +208,7 @@
     </div>
 
     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
-        <div class="info-box-2 bg-light-blue hover-zoom-effect" data-toggle="collapse" data-target="#collapse4">
+        <div class="info-box-2 bg-light-blue hover-zoom-effect" data-toggle="collapse" data-target="#collapse9">
             <div class="icon">
                 <i class="material-icons">build</i>
             </div>
@@ -243,20 +243,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($totalfixedundermaintenance  as $key => $row) : ?>
+                                <?php foreach($emergency_report  as $key => $row) : ?>
                                     <tr>
-                                        <th scope="row"><?php echo $row->id; ?></th>
-                                        <td><a href="<?php echo site_url('app/reports/vehicles/'.$row->vehicle_registration_number); ?>"><?php echo $row->vehicle_registration_number; ?></a></td>
-                                        <td><a href="#"><?php echo $row->trailer_number; ?></a></td>
-                                        <td><?php echo $row->report_status; ?></td>
+                                        <td><?php echo $row->emergency_id; ?></td>
+                                        <td><?php echo $row->name . " " . $row->surname; ?></td>
+                                        <td><?php echo $row->comment; ?></td>
+                                        <td><?php echo $row->status; ?></td>
                                         <td><?php echo $row->created; ?></td>
-                                        <?php if($row->report_status == '<span class="label label-success">Fixed</span>') : ?>
-                                           <td></td>
-                                        <?php else: ?>
-                                         <td>
-                                            <p><a href="javascript:void(0);" data-id="<?php echo $row->id; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row->id) ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>                                          
-                                        </td>
-                                        <?php endif; ?>
+                                        <td><?php echo ($row->fix_date == '0') ? "NA" : $row->fix_date; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -336,7 +330,7 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 collapse" id="collapse4">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 collapse" id="collapse9">
                 <div class="card ">
                     <div class="header bg-light-blue">
                         <h2>
