@@ -98,7 +98,7 @@ class Mechanic extends CI_Controller {
 	}
 
 	public function update_emergency_report($id){
-		$emergency_id = $this->input->post("id");
+		$emergency_id = $id;
 
 		if($updated = $this->mechanic->updateEmergencyReport($emergency_id)){
 			echo json_encode(["status" => true , "message" => "Successfully Updated Status!", "data" => $updated]);

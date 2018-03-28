@@ -20,6 +20,8 @@
                     url : url ,
                     method : "POST" ,
                     success : function(response){
+
+                        console.log(response);
                         swal("Updated", "Successfully updated" , "success");
                     },
                     error: function(){
@@ -100,13 +102,20 @@
 
 <div class="block-header">
     <h2>
-        <a role="button" class="btn btn-danger" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=fixed');?>" class="btn btn-success fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Fixed</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=under_maintenance');?>" class="btn btn-warning under_maintenance" ><i class="material-icons" style="position: relative;font-size: 16.5px;">build</i> Under Maintenance</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?status=open');?>" class="btn btn-primary open" ><i class="material-icons" style="position: relative;font-size: 16.5px;">error_outline</i> Open</a>
-        <a role="button" href="<?php echo site_url('app/mechanic/?search=all');?>" class="btn btn-danger all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">donut_large</i> All</a>
+        <a role="button" class="btn btn-danger" data-toggle="collapse" href="#searchcollapse" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
+
+        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?status=defect');?>" class="btn btn-warning fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Defect</a>
+
+        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?status=fixed');?>" class="btn btn-success fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Fixed</a>
+        
+        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?search=all');?>" class="btn btn-info all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">donut_large</i> All</a>
 
     </h2>
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="collapse" id="searchcollapse">
+        <?php $this->load->view('page/mechanic/emergency_search'); ?>
+    </div>
 </div>
 <!-- Basic Examples -->
 <div class="row clearfix">
