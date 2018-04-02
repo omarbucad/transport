@@ -1672,17 +1672,34 @@ class Report_model extends CI_Model {
     }
 
     public function all_fixed_undermaintenance(){
-      $h = strtotime(date("M d Y"));
-      $this->db->select("r.* , rs.status as report_status");
-      $this->db->where("rs.created",$h);
-      $this->db->where("rs.status", 3);
-      $this->db->or_where("rs.status", 2);
+      $this->db->select("r.*, rs.status as report_status");
+      $this->db->where("rs.created >=", strtotime("today midnight"));
+      $this->db->where("rs.created <=", strtotime("tomorrow midnight -1 second"));
+      $this->db->where_in("rs.status", [2,3]);
       $this->db->join("report_status rs", "rs.report_status_id = r.status_id");
-      $totalfixed = $this->db->get("report r")->result();
+      $report = $this->db->get("report r")->result_array();
+      foreach ($report as $key => $value) {
+        $report[$key]['report_from'] = "DRIVER";
+      }
+
+      $this->db->select("mr.* , mr.report_id as id, mr.registration_no as vehicle_registration_number, rs.status as report_status");
+      $this->db->where("rs.created >=", strtotime("today midnight"));
+      $this->db->where("rs.created <=", strtotime("tomorrow midnight -1 second"));
+      $this->db->where_in("rs.status", [2,3]);
+      $this->db->join("mechanic_report_status rs", "rs.report_status_id = mr.report_status");
+      $mechanic = $this->db->get("mechanic_report mr")->result_array();
+
+      foreach ($mechanic as $key => $value) {
+        $mechanic[$key]['report_from'] = "MECHANIC";
+      }
+
+      $totalfixed = array_merge($report, $mechanic);
+
+      //print_r_die($totalfixed);
 
       foreach ($totalfixed as $key => $value) {
-        $totalfixed[$key]->report_status = report_type($value->report_status);
-        $totalfixed[$key]->created = convert_timezone($value->created, true);
+        $totalfixed[$key]['report_status'] = report_type($value['report_status']);
+        $totalfixed[$key]['created'] = convert_timezone($value['created'], true);
       }
 
 

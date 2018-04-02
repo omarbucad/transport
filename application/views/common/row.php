@@ -1,3 +1,136 @@
+
+<script type="text/javascript">
+    $(document).on('click' , '.statusUpdateBtn' , function(){
+        var form = $(this).closest('.modal').find('form');
+        var url = form.attr('action');
+        var id = form.find('#modal_report_id').val();
+        var status = form.find('#modal_status').val();
+        var comment = form.find('#modal_comment').val();
+        var data = {id : id , status:status , comment:comment , from:"report" };
+
+        swal({
+            title: "Are you sure?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                if(status == ""){
+                    swal("Incomplete", "Status required" , "error");
+                }else{
+                    $.ajax({
+                        url : url ,
+                        method : 'post' ,
+                        data : data ,
+                        success : function(response){
+                            var json = jQuery.parseJSON(response);
+
+                            $(".tablerow"+json.report_id).find('.report_status').html(json.status);
+
+                            swal("Updated!", "Successfully Updated" , "success");
+                            $('#defaultModal').modal('hide');
+                            form[0].reset();
+                        }
+                    });
+                }
+            } 
+        });
+    });
+
+    $(document).on('click' , '.statusMechanicUpdateBtn' , function(){
+        var form = $(this).closest('.modal').find('form');
+        var url = form.attr('action');
+        var id = form.find('#mechanic_report_id').val();
+        var status = form.find('#modal_status').val();
+        var comment = form.find('#modal_comment').val();
+        var data = {id : id , status:status , comment:comment , from:"report" };
+
+        swal({
+            title: "Are you sure?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                if(status == ""){
+                    swal("Incomplete", "Status required" , "error");
+                }else{
+                    $.ajax({
+                        url : url ,
+                        method : 'post' ,
+                        data : data ,
+                        success : function(response){
+                            var json = jQuery.parseJSON(response);
+                            var tr = $("#_"+json.data['report_id']);
+                            tr.find(".report_status").html(json.data['status']);
+                           
+                            swal("Updated!", "Successfully Updated" , "success");
+                            $('#mechanicUpdateModal').modal('hide');
+                            form[0].reset();
+
+                        }
+                    });
+               
+                }
+            } 
+        });
+        
+    });
+
+    $(document).on('click' , '.viewmechModal' , function(){
+        var href = $(this).data('href');
+        var id = $(this).data('id');
+
+        $.ajax({
+            url : href ,
+            method : 'get' ,
+            success : function(response){
+                var json = jQuery.parseJSON(response);
+                var modal = $('#mechanicUpdateModal').modal('show');
+                var tmp = "";
+                $.each(json.checklist , function(k, v){
+                        tmp += "<li>"+v.checklist_index+"</li>";
+                });
+                modal.find('.mechanic_update_container > nav > ol').html(tmp);
+                modal.find('#mechanicUpdateModalLabel').html("Report # "+ id);
+                modal.find('input#mechanic_report_id').val(id);
+            }
+        });
+    });
+
+    $(document).on('click' , '.viewModal' , function(){
+        var href = $(this).data('href');
+        var id = $(this).data('id');
+
+        $.ajax({
+            url : href ,
+            method : 'get' ,
+            success : function(response){
+                var json = jQuery.parseJSON(response);
+                var modal = $('#defaultModal').modal('show');
+                var tmp = "";
+                $.each(json.checklist , function(k , v){
+                    tmp += "<li>"+v+"</li>";
+                });
+                modal.find('.modal_defect_container > nav > ol').html(tmp);
+                modal.find('#defaultModalLabel').html("Report # "+json.id);
+                modal.find('#modal_report_id').val(json.id);
+            }
+        });
+        
+    });
+</script>
+
 <div class="row clearfix">
     <!-- COLLAPSE 1 -->
     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
@@ -252,6 +385,7 @@
                                         <td><?php echo $row->status; ?></td>
                                         <td><?php echo $row->created; ?></td>
                                         <td><?php echo ($row->fix_date == '0') ? "NA" : $row->fix_date; ?></td>
+                                        <td><a href="javascript:void(0);" data-id="<?php echo $row->emergency_id; ?>" data-href="<?php echo site_url('app/mechanic/update_emergency_report/'.$row->emergency_id) ?>" class="btn btn-xs btn-info viewModal">Fix</a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -343,8 +477,8 @@
                             <thead>
                                 <tr>
                                     <th><nobr>Report #</nobr></th>
-                                    <th><nobr>Vehicle Number</nobr></th>
-                                    <th><nobr>Trailer Number</nobr></th>
+                                    <th><nobr>Report From</nobr></th>
+                                    <th><nobr>Vehicle Registration Number</nobr></th>
                                     <th><nobr>Status</nobr></th>
                                     <th><nobr>Updated</nobr></th>
                                     <th>Action</th>
@@ -352,17 +486,21 @@
                             </thead>
                             <tbody>
                                 <?php foreach($totalfixedundermaintenance  as $key => $row) : ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $row->id; ?></th>
-                                        <td><a href="<?php echo site_url('app/reports/vehicles/'.$row->vehicle_registration_number); ?>"><?php echo $row->vehicle_registration_number; ?></a></td>
-                                        <td><a href="#"><?php echo $row->trailer_number; ?></a></td>
-                                        <td><?php echo $row->report_status; ?></td>
-                                        <td><?php echo $row->created; ?></td>
-                                        <?php if($row->report_status == '<span class="label label-success">Fixed</span>') : ?>
+                                    <tr class="tablerow">
+                                        <th scope="row"><?php echo $row['id']; ?></th>
+                                        <td><?php echo $row['report_from']; ?></td>
+                                        <td><a href="<?php echo site_url('app/reports/vehicles/'.$row['vehicle_registration_number']); ?>"><?php echo $row['vehicle_registration_number']; ?></a></td>
+                                        <td class="report_status"><?php echo $row['report_status']; ?></td>
+                                        <td><?php echo $row['created']; ?></td>
+                                        <?php if($row['report_status'] == '<span class="label label-success">Fixed</span>') : ?>
                                            <td></td>
                                         <?php else: ?>
                                          <td>
-                                            <p><a href="javascript:void(0);" data-id="<?php echo $row->id; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row->id) ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>                                          
+                                            <?php if($row['report_from'] == 'DRIVER') : ?>
+                                            <p><a href="javascript:void(0);" data-id="<?php echo $row['id']; ?>" data-href="<?php echo site_url('app/reports/getReportById/'.$row['id']); ?>" class="btn btn-xs btn-info viewModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p> 
+                                            <?php else : ?>  
+                                            <p><a href="javascript:void(0);" data-id="<?php echo $row['id']; ?>" data-href="<?php echo site_url('app/mechanic/viewReport/'.$row['id'].'/true'); ?>" class="btn btn-xs btn-info viewmechModal"><i class="material-icons" style="font-size: 16px;">touch_app</i> Action</a></p>
+                                            <?php endif; ?>                                       
                                         </td>
                                         <?php endif; ?>
                                     </tr>

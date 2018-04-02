@@ -182,7 +182,6 @@ class Mechanic_model extends CI_Model {
 
     public function getEmergencyReports(){
     	
-
     	if($this->input->get("status") == "fixed"){
     		$this->db->where("e.fix_date !=", 0);
     	}
@@ -231,7 +230,6 @@ class Mechanic_model extends CI_Model {
 
     	$emergency->images = $this->db->where("emergency_id", $id)->get("emergency_report_images")->result();
 
-    	//print_r_die($emergency);
    		$emergency->created = convert_timezone($emergency->created, true);    	
 
     	return $emergency;
