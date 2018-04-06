@@ -1673,6 +1673,7 @@ class Report_model extends CI_Model {
 
     public function all_fixed_undermaintenance(){
       $this->db->select("r.*, rs.status as report_status");
+      $this->db->where("r.report_type", "DEFECT");
       $this->db->where("rs.created >=", strtotime("today midnight"));
       $this->db->where("rs.created <=", strtotime("tomorrow midnight -1 second"));
       $this->db->where_in("rs.status", [2,3]);
@@ -1683,6 +1684,8 @@ class Report_model extends CI_Model {
       }
 
       $this->db->select("mr.* , mr.report_id as id, mr.registration_no as vehicle_registration_number, rs.status as report_status");
+
+      $this->db->where("mr.report_type", "DEFECT");
       $this->db->where("rs.created >=", strtotime("today midnight"));
       $this->db->where("rs.created <=", strtotime("tomorrow midnight -1 second"));
       $this->db->where_in("rs.status", [2,3]);
