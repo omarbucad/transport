@@ -161,8 +161,9 @@
                                 <td><?php echo ($row->fix_date == '0') ? "NA" : $row->fix_date; ?></td>
                                 <td>
                                      <p><a href="javascript:void(0);" class="btn btn-primary btn-xs view-map" data-id="<?php echo $row->emergency_id; ?>" data-href="<?php echo site_url('app/mechanic/view_emergency_report/').$row->emergency_id; ?>"><i class="material-icons" style="font-size: 16.5px;">my_location</i> View Map</a></p>
-
-                                    <p><a href="javascript:void(0);" data-id="<?php echo $row->emergency_id; ?>" data-href="<?php echo site_url('app/mechanic/update_emergency_report/'.$row->emergency_id) ?>" class="btn btn-xs btn-info fix-emergency"><i class="material-icons" style="font-size: 16px;">build</i> Fix</a></p>
+                                    <?php if($row->fix_date == '0') :?>
+                                        <p><a href="javascript:void(0);" data-id="<?php echo $row->emergency_id; ?>" data-href="<?php echo site_url('app/mechanic/update_emergency_report/'.$row->emergency_id) ?>" class="btn btn-xs btn-info fix-emergency"><i class="material-icons" style="font-size: 16px;">build</i> Fix</a></p>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

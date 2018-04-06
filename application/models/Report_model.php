@@ -500,6 +500,19 @@ class Report_model extends CI_Model {
       $this->db->join('accounts a', 'a.id = r.user_id');
 
       /* SEARCH AREA */
+
+      if($this->input->get('status') == "fixed"){
+        $this->db->where('rs.status', 3);
+      }
+
+      if($this->input->get('status') == "under_maintenance"){
+        $this->db->where('rs.status', 2);
+      }
+
+      if($this->input->get('status') == "open"){
+        $this->db->where('rs.status', 1);
+      }
+
       if($this->input->get('status') == 'all' || !$this->input->get('status', TRUE)){
           $this->db->where('rs.status != ' , 0 );
       }else{
@@ -563,11 +576,23 @@ class Report_model extends CI_Model {
       $this->db->join('accounts a2', 'a2.id = rs.account_id');
       $this->db->join('accounts a', 'a.id = r.user_id');
 
-      /* SEARCH AREA */
+      /* SEARCH AREA */      
+      if($this->input->get('status') == "fixed"){
+        $this->db->where('rs.status', 3);
+      }
+
+      if($this->input->get('status') == "under_maintenance"){
+        $this->db->where('rs.status', 2);
+      }
+
+      if($this->input->get('status') == "open"){
+        $this->db->where('rs.status', 1);
+      }
+      
       if($this->input->get('status') == 'all' || !$this->input->get('status')){
           $this->db->where('rs.status != ' , 0 );
       }else{
-          $this->db->where('rs.status ' , $this->input->get('status') );
+        //
       }
 
       if($this->input->get('trailer_number')){
