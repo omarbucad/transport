@@ -514,7 +514,7 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == 'all' || !$this->input->get('status', TRUE)){
-          $this->db->where('rs.status != ' , 0 );
+          //$this->db->where('rs.status != ' , 0 );
       }else{
           //$this->db->where('rs.status ' , $this->input->get('status', TRUE) );
       }
@@ -590,7 +590,7 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == 'all' || !$this->input->get('status')){
-          $this->db->where('rs.status != ' , 0 );
+          //$this->db->where('rs.status != ' , 0 );
       }else{
         //
       }
