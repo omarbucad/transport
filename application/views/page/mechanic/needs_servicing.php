@@ -1,5 +1,20 @@
 <script type="text/javascript">
     $(function () {
+        var oTable = $('.dt').dataTable({
+            stateSave: true,
+            stateSaveCallback: function(settings,data) {
+                  localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+            },
+            "pageLength": 50 ,
+            responsive: true,
+            aaSorting : [],
+            drawCallback: function(settings){
+                var api = this.api();
+            }
+        });
 
         $(document).on('click' , '.viewMechanicModal' , function(){
             var id = $(this).data("id");
@@ -36,7 +51,7 @@
     }
 </style>
 
-
+<?php $this->load->view("common/row") ?>
 
 <!-- Basic Examples -->
 <div class="row clearfix">

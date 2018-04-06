@@ -1,6 +1,23 @@
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_API_KEY; ?>"></script>
 
 <script type="text/javascript">
+    $(function(){
+        var oTable = $('.dt').dataTable({
+            stateSave: true,
+            stateSaveCallback: function(settings,data) {
+                  localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+            },
+            "pageLength": 50 ,
+            responsive: true,
+            aaSorting : [],
+            drawCallback: function(settings){
+                var api = this.api();
+            }
+        });
+    });
     
     $(document).on("click", ".fix-emergency", function(){
         var url = $(this).data("href");
@@ -99,17 +116,10 @@
         }
     }
 </style>
-
+<?php $this->load->view("common/row") ?>
 <div class="block-header">
     <h2>
-        <a role="button" class="btn btn-danger" data-toggle="collapse" href="#searchcollapse" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
-
-        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?status=defect');?>" class="btn btn-warning fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Defect</a>
-
-        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?status=fixed');?>" class="btn btn-success fixed" ><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Fixed</a>
-        
-        <a role="button" href="<?php echo site_url('app/mechanic/emergency_reports/?search=all');?>" class="btn btn-info all" ><i class="material-icons" style="position: relative;font-size: 16.5px;">donut_large</i> All</a>
-
+        <a role="button" class="btn btn-success" data-toggle="collapse" href="#searchcollapse" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="position: relative;font-size: 16.5px;">search</i> Search</a>
     </h2>
 </div>
 <div style="margin-bottom: 20px;">
