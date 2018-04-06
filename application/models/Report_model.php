@@ -510,7 +510,7 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == "open"){
-        $this->db->where('rs.status', 1);
+        $this->db->where('rs.status', 0);
       }
 
       if($this->input->get('status') == 'all' || !$this->input->get('status', TRUE)){
@@ -586,9 +586,9 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == "open"){
-        $this->db->where('rs.status', 1);
+        $this->db->where('rs.status', 0);
       }
-      
+
       if($this->input->get('status') == 'all' || !$this->input->get('status')){
           $this->db->where('rs.status != ' , 0 );
       }else{
@@ -1697,7 +1697,7 @@ class Report_model extends CI_Model {
     }
 
     public function all_fixed_undermaintenance(){
-      $this->db->select("r.*, rs.status as report_status");
+      $this->db->select("r.*, rs.status as report_status, rs.account_id");
       $this->db->where("r.report_type", "DEFECT");
       $this->db->where("rs.created >=", strtotime("today midnight"));
       $this->db->where("rs.created <=", strtotime("tomorrow midnight -1 second"));
@@ -1705,7 +1705,9 @@ class Report_model extends CI_Model {
       $this->db->join("report_status rs", "rs.report_status_id = r.status_id");
       $report = $this->db->get("report r")->result_array();
       foreach ($report as $key => $value) {
-        $report[$key]['report_from'] = "DRIVER";
+        $this->db->select("name, surname");
+        $info = $this->db->where("id", $report[$key]['account_id'])->get("accounts")->row();
+        $report[$key]['report_from'] = $info->name ." ". $info->surname;
       }
 
       $this->db->select("mr.* , mr.report_id as id, mr.registration_no as vehicle_registration_number, rs.status as report_status");
@@ -1718,7 +1720,9 @@ class Report_model extends CI_Model {
       $mechanic = $this->db->get("mechanic_report mr")->result_array();
 
       foreach ($mechanic as $key => $value) {
-        $mechanic[$key]['report_from'] = "MECHANIC";
+        $this->db->select("name, surname");
+        $info = $this->db->where("id", $report[$key]['account_id'])->get("accounts")->row();
+        $report[$key]['report_from'] = $info->name ." ". $info->surname;
       }
 
       $totalfixed = array_merge($report, $mechanic);

@@ -532,7 +532,7 @@
                             <thead>
                                 <tr>
                                     <th><nobr>Report #</nobr></th>
-                                    <th><nobr>Report From</nobr></th>
+                                    <th><nobr>Updated By</nobr></th>
                                     <th><nobr>Vehicle Registration Number</nobr></th>
                                     <th><nobr>Status</nobr></th>
                                     <th><nobr>Updated</nobr></th>
