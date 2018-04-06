@@ -510,7 +510,7 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == "open"){
-        $this->db->where('rs.status', 0);
+        $this->db->where_in("rs.status", [0,1]);
       }
 
       if($this->input->get('status') == 'all' || !$this->input->get('status', TRUE)){
@@ -586,7 +586,7 @@ class Report_model extends CI_Model {
       }
 
       if($this->input->get('status') == "open"){
-        $this->db->where('rs.status', 0);
+        $this->db->where_in("rs.status", [0,1]);
       }
 
       if($this->input->get('status') == 'all' || !$this->input->get('status')){
