@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    $(document).on("click", "input[name=is_merge]", function(){
+        var val = $(this).prop("checked");
+        $(this).attr("value",val);
+    });
+</script>
 <div class="card">
     <div class="header bg-green">
         <h2>
@@ -141,8 +147,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">                        
+                        <div class="col-lg-3 col-xs-12">                            
+                            <input id="acceptTerms-asdvv1" type="checkbox" name="is_merge" value="false">
+                            <label for="acceptTerms-asdvv1">Show Merged Invoices</label>
+                        </div>
+                    </div>
 
                 </div>
+
                 <div class="col-xs-12 col-lg-2">
                     <button class="btn btn-primary btn-block waves-effect" type="submit" name="submit" value="submit" id="_sfis"><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Apply Filter</button>
                 </div>

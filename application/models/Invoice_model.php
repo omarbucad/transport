@@ -18,7 +18,7 @@ class Invoice_model extends CI_Model {
 
         $this->db->select("j.job_name , j.job_number , j.telephone");
         $this->db->select("j.type_of_truck , j.loading_time , j.delivery_time , j.delivered_fulldate , j.signature , j.time_of_arrival , j.with_charge , j.cancel_notes , j.with_outsource , j.outsource_price , j.job_number");
-        $this->db->select("i.paid_by , i.invoice_date , i.status , i.paid_date , i.job_id , i.invoice_id , i.confirmed_date , i.generated_pdf , i.generated_pdf_paid , i.price , i.total_price , i.vat , i.demurrage , i.to_outsource , i.invoice_number , i.notes as invoice_notes , i.merge , i.job_number as jn , i.jpo_number , i.jmerge_name");
+        $this->db->select("i.paid_by , i.invoice_date , i.status , i.paid_date , i.job_id , i.invoice_id , i.confirmed_date , i.generated_pdf , i.generated_pdf_paid , i.price , i.total_price , i.vat , i.demurrage , i.to_outsource , i.invoice_number , i.notes as invoice_notes , i.merge , i.merge_id , i.job_number as jn , i.jpo_number , i.jmerge_name");
         $this->db->select("c.company_name , c.registration_number , c.vat_number , c.billing_address");
         $this->db->select("CONCAT(a.name , ' ' , a.surname) as confirmed_by");
         $this->db->select("o.company_name as outsource_company_name , o.registration_number as outsource_registration_number , o.vat_number as outsource_vat_number , o.billing_address as outsource_billing_address");
@@ -62,7 +62,7 @@ class Invoice_model extends CI_Model {
                     $this->db->where("i.job_id" , $this->input->get("job_number"));
                 }
             }else{
-                $this->db->where("merge_id" , 0);
+                //$this->db->where("merge_id" , 0);
             }
 
             if($this->input->get("job_name")){
@@ -145,7 +145,7 @@ class Invoice_model extends CI_Model {
                 $this->db->where("i.invoice_date >" , $last_week);
             }
 
-            $this->db->where("merge_id" , 0);
+           //$this->db->where("merge_id" , 0);
         }
 
         if($id){
@@ -167,6 +167,10 @@ class Invoice_model extends CI_Model {
         }else if($this->session->userdata("account_type") == OUTSOURCE){
             $this->db->where("j.outsource_company_name" , $this->session->userdata("outsource_id"));
             $this->db->where("i.to_outsource" , "NO");
+        }
+
+        if($this->input->get("is_merge") == false){
+            $this->db->where("i.merge","N");
         }
         
         $this->db->order_by("i.invoice_id" , "DESC");
