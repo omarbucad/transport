@@ -580,6 +580,9 @@
         <?php $this->load->view('page/customer/invoice/search') ?>
     </div>
 </div>
+<div class="alert bg-light-green">
+  <strong>Green</strong> rows indicates that the invoice was merged.
+</div>
 
 <!-- Basic Examples -->
 <div class="row clearfix">
@@ -591,6 +594,7 @@
                         <h2>
                             INVOICE LIST
                         </h2>
+                       
                     </div>
                     <div class="col-lg-6 col-xs-12 text-right">
                         <a href="javascript:void(0);" class="btn btn-primary outsource-btn" data-value="yes">Outsource</a>
