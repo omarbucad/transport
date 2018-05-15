@@ -147,11 +147,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">                        
+                    <div class="row">           
+                        <div class="col-lg-3 col-xs-12">
+                            <label>System ID:</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" id="" class="form-control" name="system_id" value="<?php echo $this->input->get("system_id")?>">
+                                </div>
+                            </div>
+                        </div>        
                         <div class="col-lg-3 col-xs-12">                            
-                            <input id="acceptTerms-asdvv1" type="checkbox" name="is_merge" value="false">
-                            <label for="acceptTerms-asdvv1">Show Merged Invoices</label>
-                        </div>
+                            <input id="acceptTerms-asdvv1" type="checkbox" name="is_merge" value="false" <?php echo ($this->input->get('is_merge'))? 'checked':''; ?>>
+                            <label for="acceptTerms-asdvv1">No Merged Invoices</label>
+                        </div>                
                     </div>
 
                 </div>

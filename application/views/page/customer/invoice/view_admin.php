@@ -650,14 +650,17 @@
                         <?php foreach($result as $key => $row) : ?>
                             <tr id="_tr_<?php echo $row->invoice_id; ?>" class="<?php echo ($row->merge_id > 0)? 'bg-light-green' : ''; ?>">
                                 <td>
+                                    
                                     <?php if($row->merge_id == 0) : ?>
                                     <input id="acceptTerms-asd<?php echo $key; ?>"  value="<?php echo $row->invoice_id; ?>" data-price="<?php echo $row->total_price_raw; ?>" type="checkbox" class="tr_invoice_id">
                                     <label for="acceptTerms-asd<?php echo $key; ?>"></label> 
-                                    <?php else : ?>
-                                       <span class="label bg-blue"><?php echo $row->merge_id; ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td><?php echo $row->invoice_id; ?></td>
+                                <td><?php echo $row->invoice_id; ?>
+                                    <?php if($row->merge_id > 0) : ?>
+                                    <span class="label bg-blue">MERGED AT <?php echo $row->merge_id; ?></span>
+                                    <?php endif; ?>                                        
+                                </td>
                                 <td><?php echo $row->invoice_number; ?></td>
                                 <td><?php echo $row->jn; ?></td>
                                 <td><?php echo $row->jpo_number; ?></td>
@@ -672,9 +675,11 @@
 
                                 <td>
                                     <span class="td_status"><?php echo $row->paid_status; ?></span>
-
                                     <?php if($row->merge == "Y") : ?>
-                                        <span class="label bg-blue">MERGE</span>
+                                        <span class="label bg-blue" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="top" title="Invoices" data-html="true" data-content="<?php echo $row->merge_list; ?>">
+                                        Parent Invoice ( <?php echo $row->merge_count;?> )
+                                        </span>
+                                        
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo $row->delivery_time; ?></td>

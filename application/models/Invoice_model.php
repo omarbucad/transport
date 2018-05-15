@@ -132,10 +132,10 @@ class Invoice_model extends CI_Model {
             if( ($this->input->get("invoice_date_from") AND $this->input->get("invoice_date_to"))  OR ($this->input->get("paid_date_from") AND $this->input->get("paid_date_to")) OR ($this->input->get("delivery_date_from") AND $this->input->get("delivery_date_to"))){
 
             }else{
-                if(!$this->input->get("outsource")){
+                // if(!$this->input->get("outsource")){
                     $last_week = strtotime("last week");
                     $this->db->where("i.invoice_date >" , $last_week);
-                }
+                // }
                 
             }
 
@@ -169,9 +169,15 @@ class Invoice_model extends CI_Model {
             $this->db->where("i.to_outsource" , "NO");
         }
 
-        if($this->input->get("is_merge") == false){
+        
+        if($this->input->get("is_merge") == true){
             $this->db->where("i.merge","N");
-        }
+        } 
+        
+        if($this->input->get("system_id")){
+            $this->db->where("i.invoice_id",$this->input->get("system_id"));
+        } 
+
         
         $this->db->order_by("i.invoice_id" , "DESC");
       
@@ -214,11 +220,22 @@ class Invoice_model extends CI_Model {
             $result[$key]->vat_number = ($row->to_outsource == "NO") ? $row->vat_number : $row->outsource_vat_number;
             $result[$key]->billing_address = ($row->to_outsource == "NO") ? $row->billing_address : $row->outsource_billing_address;
 
+            $result[$key]->merge_list = array();
+            $result[$key]->merge_count = 0;
+
             if($row->merge == "Y"){
                 $result[$key]->job_name = $row->jmerge_name;
+                $this->db->select("CONCAT(invoice_id ,'/', job_number) AS name")->where("merge_id",$row->invoice_id);
+                $merge_list = $this->db->get("invoice")->result();
+                $temp = array();
+                foreach ($merge_list as $v) {
+                   $temp[] = $v->name;
+                }
+                $result[$key]->merge_list = implode($temp,"<br>");
+                $result[$key]->merge_count = count($temp);
             }
         }
-
+        
         if($id){
             return array(
                 "result" => $result ,
