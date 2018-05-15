@@ -173,7 +173,7 @@ class Invoice_model extends CI_Model {
         if($this->input->get("is_merge") == true){
             $this->db->where("i.merge","N");
         } 
-        
+
         if($this->input->get("system_id")){
             $this->db->where("i.invoice_id",$this->input->get("system_id"));
         } 
@@ -225,7 +225,7 @@ class Invoice_model extends CI_Model {
 
             if($row->merge == "Y"){
                 $result[$key]->job_name = $row->jmerge_name;
-                $this->db->select("CONCAT(invoice_id ,'/', job_number) AS name")->where("merge_id",$row->invoice_id);
+                $this->db->select("CONCAT(invoice_id ,' /', job_number) AS name")->where("merge_id",$row->invoice_id);
                 $merge_list = $this->db->get("invoice")->result();
                 $temp = array();
                 foreach ($merge_list as $v) {
