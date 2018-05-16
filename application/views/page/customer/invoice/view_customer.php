@@ -379,6 +379,9 @@
         <?php $this->load->view('page/customer/invoice/search') ?>
     </div>
 </div>
+<div class="alert bg-light-green">
+  <strong>Green</strong> rows indicates that the invoice was merged.
+</div>
 
 <!-- Basic Examples -->
 <div class="row clearfix">
