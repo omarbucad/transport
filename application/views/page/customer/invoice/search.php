@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    $(document).on("click", "input[name=is_merge]", function(){
+        var val = $(this).prop("checked");
+        $(this).attr("value",val);
+    });
+</script>
 <div class="card">
     <div class="header bg-green">
         <h2>
@@ -141,8 +147,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">           
+                        <div class="col-lg-3 col-xs-12">
+                            <label>System ID:</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" id="" class="form-control" name="system_id" value="<?php echo $this->input->get("system_id")?>">
+                                </div>
+                            </div>
+                        </div>        
+                        <div class="col-lg-3 col-xs-12">                            
+                            <input id="acceptTerms-asdvv1" type="checkbox" name="is_merge" value="false" <?php echo ($this->input->get('is_merge'))? 'checked':''; ?>>
+                            <label for="acceptTerms-asdvv1">No Merged Invoices</label>
+                        </div>                
+                    </div>
 
                 </div>
+
                 <div class="col-xs-12 col-lg-2">
                     <button class="btn btn-primary btn-block waves-effect" type="submit" name="submit" value="submit" id="_sfis"><i class="material-icons" style="position: relative;font-size: 16.5px;">done</i> Apply Filter</button>
                 </div>

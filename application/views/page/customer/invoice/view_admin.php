@@ -580,6 +580,9 @@
         <?php $this->load->view('page/customer/invoice/search') ?>
     </div>
 </div>
+<div class="alert bg-light-green">
+  <strong>Green</strong> rows indicates that the invoice was merged.
+</div>
 
 <!-- Basic Examples -->
 <div class="row clearfix">
@@ -591,6 +594,7 @@
                         <h2>
                             INVOICE LIST
                         </h2>
+                       
                     </div>
                     <div class="col-lg-6 col-xs-12 text-right">
                         <a href="javascript:void(0);" class="btn btn-primary outsource-btn" data-value="yes">Outsource</a>
@@ -648,12 +652,19 @@
                     </tfoot>
                     <tbody>
                         <?php foreach($result as $key => $row) : ?>
-                            <tr id="_tr_<?php echo $row->invoice_id; ?>">
+                            <tr id="_tr_<?php echo $row->invoice_id; ?>" class="<?php echo ($row->merge_id > 0)? 'bg-light-green' : ''; ?>">
                                 <td>
+                                    
+                                    <?php if($row->merge_id == 0) : ?>
                                     <input id="acceptTerms-asd<?php echo $key; ?>"  value="<?php echo $row->invoice_id; ?>" data-price="<?php echo $row->total_price_raw; ?>" type="checkbox" class="tr_invoice_id">
                                     <label for="acceptTerms-asd<?php echo $key; ?>"></label> 
+                                    <?php endif; ?>
                                 </td>
-                                <td><?php echo $row->invoice_id; ?></td>
+                                <td><?php echo $row->invoice_id; ?>
+                                    <?php if($row->merge_id > 0) : ?>
+                                    <span class="label bg-blue">MERGED AT <?php echo $row->merge_id; ?></span>
+                                    <?php endif; ?>                                        
+                                </td>
                                 <td><?php echo $row->invoice_number; ?></td>
                                 <td><?php echo $row->jn; ?></td>
                                 <td><?php echo $row->jpo_number; ?></td>
@@ -668,9 +679,11 @@
 
                                 <td>
                                     <span class="td_status"><?php echo $row->paid_status; ?></span>
-
                                     <?php if($row->merge == "Y") : ?>
-                                        <span class="label bg-blue">MERGE</span>
+                                        <span class="label bg-blue" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="top" title="Invoices" data-html="true" data-content="<?php echo $row->merge_list; ?>">
+                                        Parent Invoice ( <?php echo $row->merge_count;?> )
+                                        </span>
+                                        
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo $row->delivery_time; ?></td>
@@ -707,7 +720,7 @@
                                             Action <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu pull-right">
-                                            <?php if($row->status_raw == "INCOMPLETE") : ?>
+                                            <?php if($row->status_raw == "INCOMPLETE" && $row->merge_id == 0) : ?>
                                                 <li><a href="<?php echo site_url("app/customer/pay_invoices/?id[]=".$row->invoice_id); ?>">Pay Invoice</a></li>
                                             <?php endif; ?>
                                             <li><a href="javascript:void(0);" data-pdf="<?php echo $row->pdf; ?>" class="view_invoice_pdf" data-id="<?php echo $row->invoice_id; ?>">Invoice Preview</a></li>
@@ -717,8 +730,11 @@
                                             <?php if($row->status_raw == "NEED CONFIRMATION" ) : ?>
                                                 <li><a href="javascript:void(0);" data-href="<?php echo site_url("app/customer/confirm_invoices"); ?>" data-id="<?php echo $row->invoice_id; ?>" class="confirm_invoice">Confirm Invoice</a></li>
                                             <?php endif; ?>
+                                            <?php if($row->merge_id == 0) : ?>
                                             <li><a href="javascript:void(0);" data-href="<?php echo site_url("app/customer/generate_invoices/?id=".$row->invoice_id); ?>" class="generate_invoice">Generate Invoice</a></li>
+                                            
                                             <li><a href="<?php echo site_url("app/customer/update_invoices/?id=".$row->invoice_id); ?>">Edit Invoice</a></li>
+                                            <?php endif; ?>
                                             <?php if($row->merge == "Y") : ?>
                                                 <li><a href="<?php echo site_url("app/customer/remove_merge/?id=$row->invoice_id"); ?>" >Edit Merge</a></li>
                                             <?php endif; ?>
