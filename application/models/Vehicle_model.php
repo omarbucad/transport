@@ -149,10 +149,15 @@ class Vehicle_model extends CI_Model {
             return $result;
         }
 
-        public function getVehicleNumber($id){
+        public function getVehicleNumber($id , $status = 1){
             $this->db->select('vi.vehicle_number , vi.description , vi.id');
             $this->db->join('accounts a ' , 'a.company_id = vi.company_id');
-            $result = $this->db->where('a.id' , $id)->where('vi.status' , 1)->order_by('vehicle_number' , 'asc')->get('vehicle_information vi')->result_array();
+
+            if($status){
+                $this->where('vi.status' , 1);
+            }
+
+            $result = $this->db->where('a.id' , $id)->order_by('vehicle_number' , 'asc')->get('vehicle_information vi')->result_array();
             return $result;
         }
 
