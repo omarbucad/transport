@@ -151,14 +151,20 @@ class Reports extends CI_Controller {
 		$this->load->view('master' , $this->data );
 	}
 
-	
+
 	// --- ACCIDENT REPORT
 
 	public function accident(){
-		$this->data['page'] = "page/report/defect";
-		$this->data['result'] = $this->report->getDefectReportList();
+		$this->data['page'] = "page/report/accident";
+		$this->data['result'] = $this->report->accident_reports();
 		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
 		
 		$this->load->view('master' , $this->data );
+	}
+
+	public function accident_images($id){
+		$data = $this->report->accident_report_image($id);
+
+		echo json_encode($data);
 	}
 }

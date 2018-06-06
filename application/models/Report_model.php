@@ -1737,5 +1737,51 @@ class Report_model extends CI_Model {
 
       return $totalfixed;
     }
-    
+
+    // ---- ACCIDENT REPORT
+
+    public function accident_reports(){
+
+      if($emergency_id = $this->input->get('emergency_id')){
+        $this->db->where("emergency_id",$emergency_id);
+      }
+
+      if($driver_id = $this->input->get('driver_id')){
+        $this->db->where("driver_id",$driver_id);
+      }
+
+      if($this->input->get('date_from') AND $this->input->get('date_to')){
+          $from = strtotime($this->input->get('date_from').' 00:00 ');
+          $to = strtotime($this->input->get('date_to').' 23:59 ');
+
+          $this->db->where('created >=' , $from);
+          $this->db->where('created <=' , $to);
+      } 
+      
+      $this->db->where('report_type','ACCIDENT_REPORT');
+      $result = $this->db->get('emergency_report')->result();
+
+      foreach($result as $key => $row){
+
+        $driver = $this->db->select('name,surname')->where("id",$result[$key]->driver_id)->get('accounts')->row();
+        $result[$key]->driver = $driver->name ." ".$driver->surname;
+        $result[$key]->created = convert_timezone($row->created , true);
+      }
+      return $result;
+    }
+
+    public function accident_report_image($id){
+
+        $this->db->where('report_type','ACCIDENT_REPORT');
+        $this->db->where('emergency_id',$id);
+        $result = $this->db->get('emergency_report')->row();
+
+        $driver = $this->db->select('name,surname')->where("id",$result->driver_id)->get('accounts')->row();
+        $result->driver = $driver->name ." ".$driver->surname;
+        $result->created = convert_timezone($result->created , true);
+
+        $result->images = $this->db->select('images,emergency_id')->where('emergency_id',$id)->get('emergency_report_images')->result_array();
+        
+        return $result;
+    }
 }
