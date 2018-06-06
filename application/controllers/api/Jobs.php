@@ -54,6 +54,7 @@ class Jobs extends CI_Controller {
 				"driver_id" => $this->input->post("driver_id") ,
 				"status" => $this->input->post("status")
 				));
+			echo json_encode(["success" => 1 , "message" => "Success"]);
 		}
 	}
 	public function test(){
