@@ -154,7 +154,7 @@ class Vehicle_model extends CI_Model {
             $this->db->join('accounts a ' , 'a.company_id = vi.company_id');
 
             if($status){
-                $this->where('vi.status' , 1);
+                $this->db->where('vi.status' , 1);
             }
 
             $result = $this->db->where('a.id' , $id)->order_by('vehicle_number' , 'asc')->get('vehicle_information vi')->result_array();

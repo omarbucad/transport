@@ -150,4 +150,15 @@ class Reports extends CI_Controller {
 	
 		$this->load->view('master' , $this->data );
 	}
+
+	
+	// --- ACCIDENT REPORT
+
+	public function accident(){
+		$this->data['page'] = "page/report/defect";
+		$this->data['result'] = $this->report->getDefectReportList();
+		$this->data['get_form'] = basename($_SERVER['REQUEST_URI']);
+		
+		$this->load->view('master' , $this->data );
+	}
 }
