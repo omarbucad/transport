@@ -124,6 +124,11 @@
                     </a>
                     <ul class="ml-menu" style="display: none;">
                         <li>
+                            <a href="<?php echo site_url('app/reports/accident') ?>">
+                                <span>Accident Report</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                                 <span>Mechanic Checklist</span>
                             </a>

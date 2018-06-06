@@ -141,9 +141,6 @@ class Reports extends CI_Controller {
 			echo $this->load->view("page/report/print" , $this->data , true);
 			die();
 		}
-
-		
-		//print_r_die($checklist);
 	}
 
 	public function active_driver(){
