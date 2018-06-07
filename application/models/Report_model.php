@@ -1761,7 +1761,7 @@ class Report_model extends CI_Model {
       } 
 
       $this->db->where('report_type','ACCIDENT_REPORT');
-      $result = $this->db->get('emergency_report')->result();
+      $result = $this->db->order_by("created","DESC")->get('emergency_report')->result();
 
       foreach($result as $key => $row){
 
