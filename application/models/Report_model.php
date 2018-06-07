@@ -1747,7 +1747,9 @@ class Report_model extends CI_Model {
       }
 
       if($driver_id = $this->input->get('driver_id')){
-        $this->db->where("driver_id",$driver_id);
+        if($driver_id != ""){          
+          $this->db->where("driver_id",$driver_id);
+        }
       }
 
       if($this->input->get('date_from') AND $this->input->get('date_to')){
@@ -1757,7 +1759,7 @@ class Report_model extends CI_Model {
           $this->db->where('created >=' , $from);
           $this->db->where('created <=' , $to);
       } 
-      
+
       $this->db->where('report_type','ACCIDENT_REPORT');
       $result = $this->db->get('emergency_report')->result();
 

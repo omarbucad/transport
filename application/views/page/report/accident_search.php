@@ -34,15 +34,15 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <label for="driver_id">Driver ID</label>
+                        <label for="driver_id">Driver Name</label>
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" class="form-control" name="driver_id" id="driver_id" list="drivers" placeholder="Driver">
-                                <datalist id="drivers">
+                                <select class="form-control" name="driver_id" id="driver_id">
+                                    <option value="">- Select Driver -</option>
                                     <?php foreach($driver_list as $key => $row) : ?>
                                          <option value="<?php echo $row->id; ?>" ><?php echo  $row->name; ?></option>
                                     <?php endforeach; ?>
-                                </datalist>
+                                </select>
                             </div>
                         </div>
                     </div>    
