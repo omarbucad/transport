@@ -210,8 +210,9 @@ class Mechanic_model extends CI_Model {
 
     	$this->db->select("e.* , a.name, a.surname");
     	$this->db->join("accounts a","a.id = e.driver_id");
+
+    	$this->db->where("e.report_type","DEFECT_REPORT");
     	$emergency = $this->db->get("emergency_report e")->result();
-    	//print_r_die()
     	foreach ($emergency as $key => $value) {
     		if($emergency[$key]->fix_date){
     			$emergency[$key]->fix_date = convert_timezone($value->fix_date, true);
@@ -242,6 +243,7 @@ class Mechanic_model extends CI_Model {
     	$this->db->where("e.created <=", strtotime("tomorrow midnight -1 second"));
     	$this->db->where("e.fix_date", 0);
     	$this->db->join("accounts a","a.id = e.driver_id");
+    	$this->db->where("e.report_type","DEFECT_REPORT");
     	$emergency = $this->db->get("emergency_report e")->result();
 
     	foreach ($emergency as $key => $value) {
