@@ -46,6 +46,15 @@
 	</div>
 <?php endif; ?>
 
+<?php if($accident_notif > 0) : ?>
+	<?php $d = new DateTime(); $d = date_format($d, 'l+d+F+Y');?>
+	<div style="margin-bottom: 50px;">
+		<div class="col-lg-12 bg-red" style="padding: 10px;margin-bottom: 10px;">
+			<a href="<?php echo site_url("app/reports/accident/?date_from=".$d."&date_to=".$d); ?>" style="color:white;font-weight: bold;padding: 10px;text-decoration: none;"><?php echo $accident_notif; ?> Accident Report(s) Today</a>
+		</div>
+	</div>
+<?php endif; ?>
+
 <div class="block-header">
 	<div class="row">
 		<div class="col-xs-6 col-md-9 col-lg-9">

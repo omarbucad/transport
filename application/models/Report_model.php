@@ -1772,6 +1772,21 @@ class Report_model extends CI_Model {
       return $result;
     }
 
+    public function accident_today(){
+      $this->db->where("created >=", strtotime("today midnight"));
+      $this->db->where("created <=", strtotime("tomorrow midnight -1 second"));
+      $this->db->where('report_type','ACCIDENT_REPORT');
+      $result = $this->db->get('emergency_report')->result();
+
+      // foreach($result as $key => $row){
+
+      //   $driver = $this->db->select('name,surname')->where("id",$result[$key]->driver_id)->get('accounts')->row();
+      //   $result[$key]->driver = $driver->name ." ".$driver->surname;
+      //   $result[$key]->created = convert_timezone($row->created , true);
+      // }
+      return count($result);
+    }
+
     public function accident_report_image($id){
 
         $this->db->where('report_type','ACCIDENT_REPORT');

@@ -47,6 +47,7 @@ class Dashboard extends CI_Controller {
 
 			$this->data['store_selected_id'] = ($store_id) ? $store_id : $this->first_store_id;
 			$this->data['driver_license_notif'] = $this->dashboard->getDriverLicenseExpiry();
+			$this->data['accident_notif'] = $this->report->accident_today();
 			$this->data['activeTruck'] = $this->dashboard->getActiveCount($store_id);
 			$this->data['defectTruck'] = $this->dashboard->getDefectCount($store_id);
 	        $this->data['incompleteTruck'] = $this->dashboard->getIncompleteCount($store_id);
