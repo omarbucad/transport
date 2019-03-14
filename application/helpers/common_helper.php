@@ -133,7 +133,7 @@ if ( ! function_exists('paid_status'))
             switch ($type) {
                 case "BANK_TRANSFER":
                     if($confirmed == "COMPLETE"){
-                        return "BANK TRANSFER RECIEVED";
+                        return "BANK TRANSFER RECEIVED";
                     }else{
                         return "BANK TRANSFER UNCONFIRMED";
                     }
@@ -141,14 +141,14 @@ if ( ! function_exists('paid_status'))
                     break;
                 case "PETTY_CASH":
                     if($confirmed == "COMPLETE"){
-                        return "PETTY CASH RECIEVED";
+                        return "PETTY CASH RECEIVED";
                     }else{
                          return "PETTY CASH UNCONFIRMED";
                     }
                     break;
                 case "PAID_BY_CHEQUE":
                     if($confirmed == "COMPLETE"){
-                        return "PAID BY CHEQUE RECIEVED";
+                        return "PAID BY CHEQUE RECEIVED";
                     }else{
                         return "PAID BY CHEQUE UNCONFIRMED";
                     }
@@ -164,21 +164,21 @@ if ( ! function_exists('paid_status'))
             switch ($type) {
                 case "BANK_TRANSFER":
                     if($confirmed == "COMPLETE"){
-                        return '<span class="label bg-green">BANK TRANSFER RECIEVED</span>';
+                        return '<span class="label bg-green">BANK TRANSFER RECEIVED</span>';
                     }else{
                         return '<span class="label bg-light-green">BANK TRANSFER UNCONFIRMED</span>';
                     }
                     break;
                 case "PETTY_CASH":
                    if($confirmed == "COMPLETE"){
-                        return '<span class="label bg-blue">PETTY CASH RECIEVED</span>';
+                        return '<span class="label bg-blue">PETTY CASH RECEIVED</span>';
                     }else{
                         return '<span class="label bg-light-blue">PETTY CASH UNCONFIRMED</span>';
                     }
                     break;
                 case "PAID_BY_CHEQUE":
                     if($confirmed == "COMPLETE"){
-                        return '<span class="label bg-brown">PAID BY CHEQUE RECIEVED</span>';
+                        return '<span class="label bg-brown">PAID BY CHEQUE RECEIVED</span>';
                     }else{
                         return '<span class="label bg-grey">PAID BY CHEQUE UNCONFIRMED</span>';
                     }
@@ -866,6 +866,9 @@ if ( ! function_exists('checklist_array'))
             case 27:
                 return "Brakes(warning devices and instruments)";
                 break;
+            case 28:
+                return "Adblue(Leaks/Tank Secure)";
+                break;
         }
     }   
 }
@@ -1386,7 +1389,29 @@ if(!function_exists("send_message_to_developer")){
     }
 }
 
-
+if( ! function_exists('convert_paid_status')){
+    
+    function convert_paid_status($status) {
+        if($status == "UNPAID"){
+            return "<span class='label label-danger'>Unpaid</span>";
+        }else{
+            return "<span class='label label-success'>Paid</span>";
+        }
+    }
+}
+if ( ! function_exists('rest_status'))
+{
+    function rest_status($type)
+    {
+        if($type == 1){
+            return 'YES';
+        }elseif ($type == 0) {
+            return 'NO';
+        }else{
+            return 'NA';
+        }
+    }   
+}
 
 
     

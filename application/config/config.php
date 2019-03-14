@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.1.147/transport';
+$config['base_url'] = 'http://192.168.1.117/transport';
 
 /*
 |--------------------------------------------------------------------------
@@ -529,4 +529,4 @@ $config['proxy_ips'] = '';
 */
 
 $config['maintenance_mode'] = FALSE;
-$config['maintenance_ips'] = array('127.0.0.1', '1.1.1.1', '120.29.124.28' , '192.168.1.147');
+$config['maintenance_ips'] = array('127.0.0.1', '1.1.1.1', '120.29.124.28' , '192.168.1.117');

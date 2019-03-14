@@ -36,6 +36,20 @@
 		</tr>
 	</table>
 </div>
+<div class="col-lg-6 col-xs-12">
+	<div class="table-responsive">
+		<table width="100%">
+			<tr>
+				<th>Sufficient daily rest period?</th>
+				<td><?php echo $result->daily_rest;?></td>
+			</tr>
+			<tr>
+				<th>Sufficient weekly rest period?</th>
+				<td><?php echo $result->weekly_rest;?></td>
+			</tr>
+		</table>
+	</div>	
+</div>
 
 <div class="col-lg-6 col-xs-12">
 	<div class="table-responsive">
@@ -61,6 +75,7 @@
 		</table>
 	</div>
 </div>
+
 
 </div>
 

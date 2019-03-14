@@ -71,7 +71,7 @@ class Report_model extends CI_Model {
     public function insertTempCheckList($report_id , $checklist_type = "VEHICLE REPORT"){
 
         if($checklist_type == "VEHICLE REPORT"){
-          $x = 28;
+          $x = 29;
         }else if($checklist_type == "MOFFET REPORT"){
           $x = 33;
         }else{
@@ -905,7 +905,7 @@ class Report_model extends CI_Model {
 
 
     public function getReportById($id , $login = true){
-      $this->db->select('r.id , name , surname , r.vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment  , r.job_id , r.report_step , r.report_type , r.trailer_number as trailer_number , r.checklist_type , r.advisory');
+      $this->db->select('r.id , name , surname , r.vehicle_registration_number , start_mileage , end_mileage , start_date , end_date , r.created , rs.status , rs.comment  , r.job_id , r.report_step , r.report_type , r.trailer_number as trailer_number , r.checklist_type , r.advisory, r.daily_rest, r.weekly_rest');
       $this->db->select("j.jobs_id , j.job_name , j.loading_time , j.delivery_time , r.report_change , j.delivered_fulldate , j.time_of_arrival , j.job_notes , j.point_destination , j.checklist_done , j.load_site");
       $this->db->join('report_status rs', 'rs.report_status_id = r.status_id' , 'left');
       $this->db->join('accounts a', 'a.id = r.user_id');
@@ -925,7 +925,7 @@ class Report_model extends CI_Model {
       $checklist = $this->db->select('checklist_index')->where('report_id' , $result->id)->where('value' , 'defect')->get('report_checklist')->result_array();
 
       $x = false;
-      $limit = 28;
+      $limit = 29;
 
       if($result->checklist_type == "TRAILER REPORT"){
         $x = true;
@@ -1233,7 +1233,7 @@ class Report_model extends CI_Model {
       if($result->checklist_type == "MOFFET REPORT"){
         $limit = 33;
       }else if($result->checklist_type == "VEHICLE REPORT"){
-        $limit = 28;
+        $limit = 29;
       }else{
         $limit = 26;
       }
@@ -1435,6 +1435,12 @@ class Report_model extends CI_Model {
     /* CHECKLIST */
     public function first(){
        $store_id = $this->db->select("store_id")->where("account_id" , $this->input->post("user_id", TRUE))->get("users_store")->row();
+       /*
+          daily and weekly rest values:
+          0 - no
+          1 - yes
+          2 - n/a
+       */
 
        $arr = array(
          "user_id" => $this->input->post('user_id', TRUE),
@@ -1443,6 +1449,8 @@ class Report_model extends CI_Model {
          "trailer_number" => $this->input->post('trailer_id', TRUE),
          "start_date" => time() ,
          "store_id" => $store_id->store_id,
+         "daily_rest" => ($this->input->post("daily_rest") != '') ? $this->input->post("daily_rest") : 2,
+         "weekly_rest" => ($this->input->post("weekly_rest") != '') ? $this->input->post("weekly_rest") : 2,
          "checklist_type" => $this->input->post("report_type"),
          "report_type" => 1,
          "created" => time(),
@@ -1591,7 +1599,7 @@ class Report_model extends CI_Model {
 
            if($row->checklist_type == "VEHICLE REPORT"){
               foreach($checklist as $k => $r){
-                  if($k < 28){
+                  if($k < 30){
                       $result[$key]->checklist[] = array(
                           "checklist_index" => checklist_array($r->checklist_index),
                           "checklist_timer" => convert_timezone($r->checklist_timer , true),

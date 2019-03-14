@@ -1575,6 +1575,7 @@ class Customer_model extends CI_Model {
             "vat" => $query->vat ,
             "demurrage" => $query->demurrage ,
             "total_price" => $query->total_price ,
+            "bw_sale" => $query->total_price,
             "company_id" => $query->company_id ,
             "customer_id" => $query->customer_id ,
             "jpo_number" => $query->job_po_number ,
@@ -1602,6 +1603,7 @@ class Customer_model extends CI_Model {
         $vat = $query->outsource_price * 0.20;
         $demurrage = $query->demurrage;
         $total_price = $price + $vat + $demurrage;
+        $bw_sale = $query->total_price - $total_price;
 
         $arr = array(
             "job_id" => $job_id ,
@@ -1613,6 +1615,7 @@ class Customer_model extends CI_Model {
             "vat" => $vat ,
             "demurrage" => $demurrage,
             "total_price" =>  $total_price ,
+            "bw_sale" => $bw_sale,
             "company_id" => $query->company_id ,
             "customer_id" => $query->customer_id ,
             "jpo_number" => $query->job_po_number ,
@@ -1623,6 +1626,11 @@ class Customer_model extends CI_Model {
         $this->db->insert("invoice" , $arr);
 
         $invoice_id = $this->db->insert_id();
+
+        $this->db->where("job_number", $query->job_number);
+        $this->db->where("invoice_id !=", $invoice_id)->update("invoice", [
+            "bw_sale" => 0
+        ]);
 
         //TODO
         //$this->db->where("invoice_id" , $invoice_id)->update("invoice" , ["invoice_number" => $invoice_id]);
@@ -1689,6 +1697,7 @@ class Customer_model extends CI_Model {
         $this->db->insert("jobs_logs" , $arr);
     }
 
+    // Merged Invoices
     public function getJobByIdForInvoice($job_id , $invoice = false){
         $this->db->select("i.paid_by , i.invoice_date , i.invoice_number , i.invoice_id , i.job_id , i.paid_date , i.confirmed_by , i.price , i.demurrage , i.total_price , i.vat , i.to_outsource , i.customer_id , i.job_number as jn , i.notes as inotes , i.jpo_number");
         $this->db->select("j.job_name , j.telephone , j.address , j.job_notes as JPnotes");
@@ -1740,6 +1749,59 @@ class Customer_model extends CI_Model {
                     $result[$key]->signature = $this->config->base_url('/public/images/image-not-found.png');
                 }
             }
+        }
+
+        return $result;
+    }
+
+    // NM = Not Merged
+    public function getJobByIdForInvoiceNM($job_id , $invoice = false){
+        $this->db->select("i.paid_by , i.invoice_date , i.invoice_number , i.invoice_id , i.job_id , i.paid_date , i.confirmed_by , i.price , i.demurrage , i.total_price , i.vat , i.to_outsource , i.customer_id , i.job_number as jn , i.notes as inotes , i.jpo_number");
+        $this->db->select("j.job_name , j.telephone , j.address , j.job_notes as JPnotes");
+        $this->db->select("c.company_name , c.registration_number , c.vat_number , c.account_no , c.billing_address");
+        $this->db->select("CONCAT(a.name , ' ' , a.surname ) AS user_name , a.email , a.address as user_address");
+        $this->db->select("j.type_of_truck , j.loading_time , j.delivery_time , j.signature, j.parent_id , j.jobs_id , j.signature , j.signature_name , j.with_outsource , j.job_number , j.job_po_number");
+        $this->db->select("o.billing_address as outsource_billing_address , o.vat_number as outsource_vat_number");
+        $this->db->join("jobs j" , "i.job_id = j.jobs_id" , 'LEFT');
+        $this->db->join("jobs_parent jp" , "jp.job_parent_id = j.parent_id" , "LEFT" );
+        
+        $this->db->join("accounts a" , "a.id = jp.account_id" , "LEFT" );
+        
+        $this->db->join("customer c " , 'c.customer_id = i.customer_id' );
+        $this->db->join("outsource o" , "o.outsource_id = j.outsource_company_name" , "LEFT");
+
+        if($invoice){
+            $this->db->where_in("i.invoice_id" , $job_id);
+        }else{
+            $this->db->where("j.jobs_id" , $job_id);
+        }
+        $result = $this->db->order_by('j.delivery_time' , "ASC")->get("invoice i")->row();
+
+        $result->created = convert_timezone(time() , false , false , false , "" , "d/m/Y");
+        $result->price = round($result->price , 2);
+        $result->total_price = round($result->total_price , 2);
+        $result->demurrage = round($result->demurrage , 2);
+        $result->vat = round($result->vat , 2);
+        $result->total_price = round($result->total_price , 2);
+        $result->loading_time = convert_timezone($result->loading_time);
+        $result->delivery_time = convert_timezone($result->delivery_time , false , false , false , "" , "d/m/Y");
+        $result->invoice_date = convert_timezone($result->invoice_date , false , false , false , "" , "d/m/Y");
+        $result->paid_date = convert_timezone($result->paid_date);
+        $result->paid_by = paid_status($result->paid_by , true , ($result->confirmed_by) ? "COMPLETE" : FALSE);
+        $result->billing_address = nl2br($result->billing_address);
+
+
+        if($result->signature){
+
+          $image = full_path_image($result->signature , 'signature');
+          $result->signature = $image['path'];
+
+            if(!file_exists($image['absolute_path'])){
+                $result->signature = $this->config->base_url('/public/images/image-not-found.png');
+            }
+
+        }else{
+            $result->signature = $this->config->base_url('/public/images/image-not-found.png');
         }
 
         return $result;

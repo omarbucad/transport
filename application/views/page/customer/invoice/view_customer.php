@@ -279,8 +279,12 @@
             url : href , 
             method : "GET" ,
             success : function(response){
-                $me.closest("ul").find(".view_invoice_pdf").data("pdf" , response).trigger("click");
+                //$me.closest("ul").find(".view_invoice_pdf").data("pdf" , response).trigger("click");
                 //window.open(response , '_blank');
+                swal("Generated!", "", "success");
+                setTimeout(function(){
+                    window.location.reload(true);
+                },1500);
             }
         });
     });

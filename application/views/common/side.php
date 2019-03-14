@@ -115,6 +115,7 @@
                         <span>Trailer Numbers</span>
                     </a>
                 </li>
+                
                 <?php endif; ?>
                 <?php if($this->session->userdata('account_type') != WAREHOUSE) : ?>
                 <li class="<?php if($this->uri->segment(2) == 'reports' OR $this->uri->segment(2) == "mechanic") echo 'active' ?>">
@@ -164,6 +165,20 @@
                 </li>
                 <?php endif; ?>
                 <?php endif; ?>
+                <?php if($this->session->userdata('account_type') == SUPER_ADMIN) : ?>
+                    <li class="<?php if($this->uri->segment(2) == 'sales') echo 'active' ?>" >
+                        <a href="<?php echo site_url('app/sales') ?>">
+                            <i class="material-icons">attach_money</i>
+                            <span>Sales</span>
+                        </a>
+                    </li>
+                    <li class="<?php if($this->uri->segment(2) == 'expenditures') echo 'active' ?>" >
+                        <a href="<?php echo site_url('app/expenditures') ?>">
+                            <i class="material-icons">trending_up</i>
+                            <span>Expenditures</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li class="<?php if($this->uri->segment(2) == 'accounts' OR $this->uri->segment(2) == 'notify' ) echo 'active'?>" >
                     <a href="<?php echo site_url('app/accounts') ?>">
                         <i class="material-icons">account_box</i>
@@ -176,7 +191,7 @@
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
-                &copy; <?php echo date("Y"); ?> <a href="http://www.trackerteer.com/" style="color:black !important;">Powered by Trackerteer.com ,<br> A CONNA WALKER Company</a>.
+                &copy; <?php echo date("Y"); ?> <a href="http://www.trackerteer.com/" style="color:black !important;">Powered by Trackerteer.com</a>.
             </div>
             <div class="version">
                 <b>Version: </b> 1.0.0

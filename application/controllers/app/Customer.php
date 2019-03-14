@@ -204,7 +204,7 @@ class Customer extends CI_Controller {
     	$response = $this->customer->updateStatus();
 
     	if(isset($response['_type'])){
-    		$this->generatePdf($response['_job_id'] , true , false , true);
+    		//$this->generatePdf($response['_job_id'] , true , false , true);
     	}
 
     	if($response['status'] == true){
@@ -291,9 +291,9 @@ class Customer extends CI_Controller {
     	$invoice_id = $this->db->insert_id();
 
     	// //generate the pdf using the invoice id that created
-    	$path = $this->generateMergeInvoice2($this->customer->getJobByIdForInvoice($id , true) , $invoice_id);
+    	//$path = $this->generateMergeInvoice2($this->customer->getJobByIdForInvoice($id , true) , $invoice_id);
 
-    	$this->db->where_in("invoice_id" , $id)->update("invoice" , ["merge_id" => $invoice_id]);
+    	$this->db->where_in("invoice_id" , $id)->update("invoice" , ["merge_id" => $invoice_id, "generated_pdf" => NULL, "generated_pdf_paid" => NULL]);
 
 
     	$this->db->insert("invoice_id_generator" , ["invoice_id" => $invoice_id]);
@@ -301,8 +301,8 @@ class Customer extends CI_Controller {
 
     	$i["merge"] = "Y";
     	$i["invoice_number"] = "BW".str_pad($lid, 5, '0', STR_PAD_LEFT);
-    	$i["generated_pdf"] = $path['path'];
-    	$i["generated_pdf_paid"] = $path['path'];
+    	//$i["generated_pdf"] = $path['path'];
+    	//$i["generated_pdf_paid"] = $path['path'];
 
     	$this->db->where("invoice_id" , $invoice_id)->update("invoice" , $i);
     	$this->invoice->add_invoice_history($invoice_id);
@@ -630,15 +630,31 @@ class Customer extends CI_Controller {
     		}
 
     	}else{
+    		$job_id = $this->db->select("job_id , confirmed_by , invoice_id, invoice_number")->where("invoice_id" , $id)->get("invoice")->row();
+    		
 
-    		$job_id = $this->db->select("job_id , confirmed_by , invoice_id")->where("invoice_id" , $id)->get("invoice")->row();
+	    	if($job_id->invoice_number == ''){
+	    		$this->db->insert("invoice_id_generator" , ["invoice_id" => $id]);
+	    		$lid = $this->db->insert_id();
+	    		
+	    		$n["invoice_number"] = "BW".str_pad($lid, 5, '0', STR_PAD_LEFT);
+	    		$this->db->where("invoice_id" , $id)->update("invoice" , $n);	
+	    	} 	
 
-    		$jobs = $this->customer->getJobByIdForInvoice( $id , true);
+    		$jobs = $this->customer->getJobByIdForInvoiceNM( $id , true);
 
     		$a = ($job_id->confirmed_by) ? true : false;
-    		$x = generatePdfToLocal($jobs[0] , $job_id->invoice_id , $job_id->job_id);
+    		
 
-    		$this->invoice->saveInvoicePDF( $x['path'], $job_id->invoice_id , $a );
+	    	//generate pdf
+    		$x = generatePdfToLocal($jobs , $job_id->invoice_id , $job_id->job_id);
+    		
+	    	$i["generated_pdf"] = $x['path'];
+	    	$i["generated_pdf_paid"] = $x['path'];
+
+	    	$this->db->where("invoice_id" , $job_id->invoice_id)->update("invoice" , $i);
+
+    		//$this->invoice->saveInvoicePDF( $x['path'], $job_id->invoice_id , $a );
 
     		if($old){
     			echo base_url().$x['path'];

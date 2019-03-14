@@ -107,15 +107,13 @@
 		<table style="width: 100%;">
 
 			<tr style="text-align:center;background-color:#dbdbdb;">
-				<th style="padding:10px;border:1px solid #e0e0e0;width:15%"> Reference </th>
 				<th style="padding:10px;border:1px solid #e0e0e0;width:15%"> Delivery Date </th>
-				<th style="padding:10px;border:1px solid #e0e0e0;width:45%"> Description </th>
+				<th style="padding:10px;border:1px solid #e0e0e0;width:60%"> Description </th>
 				<th style="padding:10px;border:1px solid #e0e0e0;width:10%"> VAT </th>
 				<th style="padding:10px;border:1px solid #e0e0e0;width:15%"> Value </th>
 			</tr>
 
 			<tr>
-				<td style="height:40%;padding:10px;padding-left:15px;border:1px solid #e0e0e0;"> <?php echo @$invoice_date; ?>  </td>
 				<td style="height:40%;padding:10px;padding-left:15px;border:1px solid #e0e0e0;"> <?php echo @$delivery_time; ?>  </td>
 				<td style="padding:10px;border:1px solid #e0e0e0;"> 
 					<?php echo ($jn) ? @$job_name.' - '.@$jn : @$job_name ; ?> 

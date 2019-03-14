@@ -18,7 +18,7 @@ class Invoice_model extends CI_Model {
 
         $this->db->select("j.job_name , j.job_number , j.telephone");
         $this->db->select("j.type_of_truck , j.loading_time , j.delivery_time , j.delivered_fulldate , j.signature , j.time_of_arrival , j.with_charge , j.cancel_notes , j.with_outsource , j.outsource_price , j.job_number");
-        $this->db->select("i.paid_by , i.invoice_date , i.status , i.paid_date , i.job_id , i.invoice_id , i.confirmed_date , i.generated_pdf , i.generated_pdf_paid , i.price , i.total_price , i.vat , i.demurrage , i.to_outsource , i.invoice_number , i.notes as invoice_notes , i.merge , i.merge_id , i.job_number as jn , i.jpo_number , i.jmerge_name");
+        $this->db->select("i.paid_by , i.invoice_date , i.status , i.paid_date , i.job_id , i.invoice_id , i.confirmed_date , i.generated_pdf , i.generated_pdf_paid , i.price , i.total_price , i.vat , i.demurrage , i.bw_sale, i.to_outsource , i.invoice_number , i.notes as invoice_notes , i.merge , i.merge_id , i.job_number as jn , i.jpo_number , i.jmerge_name");
         $this->db->select("c.company_name , c.registration_number , c.vat_number , c.billing_address");
         $this->db->select("CONCAT(a.name , ' ' , a.surname) as confirmed_by");
         $this->db->select("o.company_name as outsource_company_name , o.registration_number as outsource_registration_number , o.vat_number as outsource_vat_number , o.billing_address as outsource_billing_address");
@@ -104,6 +104,13 @@ class Invoice_model extends CI_Model {
             }else if($this->input->get("invoice_date_from")){
                 $from = strtotime($this->input->get("invoice_date_from").' midnight');
                 $this->db->where("i.invoice_date >=" , $from);
+            }else{
+                $to = time();
+                $v = date("M d Y 12:00:00",$to);
+                $from = strtotime($v ." -5 months");
+
+                $this->db->where("i.invoice_date >=" , $from);
+                $this->db->where("i.invoice_date <=" , $to);
             }
 
             if($this->input->get("paid_date_from") AND $this->input->get("paid_date_to")){
@@ -132,10 +139,10 @@ class Invoice_model extends CI_Model {
             if( ($this->input->get("invoice_date_from") AND $this->input->get("invoice_date_to"))  OR ($this->input->get("paid_date_from") AND $this->input->get("paid_date_to")) OR ($this->input->get("delivery_date_from") AND $this->input->get("delivery_date_to"))){
 
             }else{
-                // if(!$this->input->get("outsource")){
-                    $last_week = strtotime("last week");
+                if(!$this->input->get("outsource")){
+                    $last_week = strtotime("last 6 months");
                     $this->db->where("i.invoice_date >" , $last_week);
-                // }
+                }
                 
             }
 
@@ -194,6 +201,8 @@ class Invoice_model extends CI_Model {
             $result[$key]->time_of_arrival = convert_timezone($row->time_of_arrival , true);
             $result[$key]->invoice_date = convert_timezone($row->invoice_date , true);
 
+
+
             $result[$key]->total_price_raw = round($row->total_price , 2);
             $result[$key]->outsource_price_raw = round($row->outsource_price , 2);
             $result[$key]->price_raw = round($row->price, 2);
@@ -201,9 +210,11 @@ class Invoice_model extends CI_Model {
             $result[$key]->demurrage_raw = round($row->demurrage, 2);
             $result[$key]->status_raw = invoice_status( $row->status  , true);
             $result[$key]->paid_status_raw = paid_status($row->paid_by , true , $result[$key]->status_raw);
+            $result[$key]->bw_sale_raw = round($row->bw_sale, 2);
 
             $result[$key]->our_price_from_outsource = formatMoney(($row->total_price - $row->outsource_price));
 
+            $result[$key]->bw_sale = formatMoney($row->bw_sale);
             $result[$key]->outsource_price = formatMoney($row->outsource_price);
             $result[$key]->total_price = formatMoney($row->total_price);
             $result[$key]->status = invoice_status($row->status , false , $result[$key]->status_raw);
@@ -893,11 +904,36 @@ class Invoice_model extends CI_Model {
         $total_sales['date'] = convert_timezone($from).' to '.convert_timezone($to);
         $data["third_box"] = $total_sales;
 
+        // FOURTH BOX
+        $from = strtotime('first day of January this year midnight');
+        $to = strtotime('tomorrow midnight -1 second');
+
+        $year_array = array(
+            "1" => array(
+                "from" => strtotime('first day of January this year midnight'),
+                "to" => strtotime('tomorrow midnight -1 second')
+                ),
+            );
+
+        $total_sales = array();
+
+        $val = $this->getSales(array("from" => $from , "to" => $to) , $company_id , "unpaid" , $customer , $store_id);
+
+        $total_sales["total"] = formatMoney($val);
+
+        foreach($year_array as $key => $row){
+            $total_sales["chart"][] = round($this->getSales($row , $company_id , "unpaid" , $customer , $store_id) , 2);
+        }
+
+        $total_sales["chart"] = implode(",", $total_sales["chart"]);
+        $total_sales['date'] = convert_timezone($from).' to '.convert_timezone($to);
+        $data["fourth_box"] = $total_sales;
+        
         return $data;
     }
 
     public function getSales($data , $company_id , $type = "default" , $customer = false , $store_id = false){
-        $this->db->select_sum("i.total_price");
+        $this->db->select_sum("i.bw_sale");
         $this->db->join("jobs j" , "jobs_id = job_id");
         $this->db->join("jobs_parent" , "job_parent_id = parent_id");
         // $this->db->join("jobs_status js" , "js.jobs_status_id = j.status_id");
@@ -923,7 +959,7 @@ class Invoice_model extends CI_Model {
         
         $val = $this->db->get("invoice i")->row_array();
 
-        return $val["total_price"];
+        return $val["bw_sale"];
     }
 
     public function getTransactionLogs(){

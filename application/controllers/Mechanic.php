@@ -19,6 +19,9 @@ class Mechanic extends CI_Controller {
 		$this->data['driver_list'] = $this->account->getAccountList(true);
 		$this->data['vehicle_list'] = $this->vehicle->getVehicleNumber($this->session->userdata('id'));
 
+		$this->data['totalfixedundermaintenance'] = $this->report->all_fixed_undermaintenance();		
+		$this->data['emergency_report'] = $this->mechanic->getEmergencyReportToday();
+
 	}
 
 	public function index(){

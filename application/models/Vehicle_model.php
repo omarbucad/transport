@@ -149,6 +149,7 @@ class Vehicle_model extends CI_Model {
             return $result;
         }
 
+        
         public function getVehicleNumber($id , $status = 1){
             $this->db->select('vi.vehicle_number , vi.description , vi.id');
             $this->db->join('accounts a ' , 'a.company_id = vi.company_id');
