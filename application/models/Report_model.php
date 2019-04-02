@@ -71,7 +71,7 @@ class Report_model extends CI_Model {
     public function insertTempCheckList($report_id , $checklist_type = "VEHICLE REPORT"){
 
         if($checklist_type == "VEHICLE REPORT"){
-          $x = 29;
+          $x = 30;
         }else if($checklist_type == "MOFFET REPORT"){
           $x = 33;
         }else{
@@ -925,7 +925,7 @@ class Report_model extends CI_Model {
       $checklist = $this->db->select('checklist_index')->where('report_id' , $result->id)->where('value' , 'defect')->get('report_checklist')->result_array();
 
       $x = false;
-      $limit = 29;
+      $limit = 30;
 
       if($result->checklist_type == "TRAILER REPORT"){
         $x = true;
@@ -1000,6 +1000,9 @@ class Report_model extends CI_Model {
         $status[$key]->status = ($login) ? report_type($row->status) : report_type($row->status , true);
         $status[$key]->created = convert_timezone($row->created , true);
       }
+
+      $result->daily_rest = rest_status($result->daily_rest);
+      $result->weekly_rest =  rest_status($result->weekly_rest);
 
       $result->status_list = $status;
       $result->images =  $images;
@@ -1233,7 +1236,7 @@ class Report_model extends CI_Model {
       if($result->checklist_type == "MOFFET REPORT"){
         $limit = 33;
       }else if($result->checklist_type == "VEHICLE REPORT"){
-        $limit = 29;
+        $limit = 30;
       }else{
         $limit = 26;
       }
@@ -1441,7 +1444,6 @@ class Report_model extends CI_Model {
           1 - yes
           2 - n/a
        */
-
        $arr = array(
          "user_id" => $this->input->post('user_id', TRUE),
          "start_mileage" => $this->input->post('start_mileage', TRUE),
@@ -1449,8 +1451,6 @@ class Report_model extends CI_Model {
          "trailer_number" => $this->input->post('trailer_id', TRUE),
          "start_date" => time() ,
          "store_id" => $store_id->store_id,
-         "daily_rest" => ($this->input->post("daily_rest") != '') ? $this->input->post("daily_rest") : 2,
-         "weekly_rest" => ($this->input->post("weekly_rest") != '') ? $this->input->post("weekly_rest") : 2,
          "checklist_type" => $this->input->post("report_type"),
          "report_type" => 1,
          "created" => time(),
@@ -1475,7 +1475,11 @@ class Report_model extends CI_Model {
 
        $this->updateStep($report_id , 2);
 
-       $this->db->where("id" , $report_id)->update("report" , ["advisory" => $this->input->post("advisory")]);
+       $this->db->where("id" , $report_id)->update("report" , [
+        "advisory" => $this->input->post("advisory"),
+        "daily_rest" => ($this->input->post("daily_rest") != '') ? $this->input->post("daily_rest") : "2",
+        "weekly_rest" => ($this->input->post("weekly_rest") != '') ? $this->input->post("weekly_rest") : "2"
+      ]);
 
        $checklist = $this->input->post('checklist', TRUE);
        $timer = $this->input->post("checklisttimer", TRUE);
@@ -1599,7 +1603,7 @@ class Report_model extends CI_Model {
 
            if($row->checklist_type == "VEHICLE REPORT"){
               foreach($checklist as $k => $r){
-                  if($k < 30){
+                  if($k < 31){
                       $result[$key]->checklist[] = array(
                           "checklist_index" => checklist_array($r->checklist_index),
                           "checklist_timer" => convert_timezone($r->checklist_timer , true),

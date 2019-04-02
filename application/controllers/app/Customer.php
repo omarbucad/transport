@@ -399,10 +399,10 @@ class Customer extends CI_Controller {
     	}else{
 
     		$file = $a[0];
-
+    		
     		header("Content-Description: File Transfer"); 
 			header("Content-Type: application/octet-stream"); 
-			header("Content-Disposition: attachment; filename='" . basename($file) . "'"); 
+			header("Content-Disposition: attachment; filename=\"" . basename($file) . "\""); 
 
 			readfile ($file);
 			die(); 

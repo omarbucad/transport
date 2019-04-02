@@ -117,11 +117,8 @@ class Driver extends CI_Controller {
 
 			if($c){
 				$this->db->where("account_id" , $c->account_id)->update("device_info" , ["device_token" => $token]);
-				echo json_encode(["status" => "true", "data" => $c , "action" => "initToken"]);
 			}else{
 				$this->db->insert("device_info" , ["account_id" => $id , "device_token" => $token , "device_id" => $device_id]);
-				
-				echo json_encode(["status" => "true", "data" => ["account_id" => $id , "device_token" => $token , "device_id" => $device_id] , "action" => "initToken"]);
 			}
 
 		}

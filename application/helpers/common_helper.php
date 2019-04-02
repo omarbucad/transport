@@ -810,7 +810,7 @@ if ( ! function_exists('checklist_array'))
                 return "Guards/Wings/Spray Suppression";
                 break;
             case 9:
-                return "Body/Load (Security/Protection)";
+                return "Body (Security/Protection)";
                 break;
             case 10:
                 return "Number Plates (Condition/Security/Bulbs)";
@@ -868,6 +868,9 @@ if ( ! function_exists('checklist_array'))
                 break;
             case 28:
                 return "Adblue(Leaks/Tank Secure)";
+                break;
+            case 29:
+                return "Load (Strapped and secure)";
                 break;
         }
     }   
@@ -1388,30 +1391,21 @@ if(!function_exists("send_message_to_developer")){
         $obj->email->clear();
     }
 }
-
-if( ! function_exists('convert_paid_status')){
-    
-    function convert_paid_status($status) {
-        if($status == "UNPAID"){
-            return "<span class='label label-danger'>Unpaid</span>";
-        }else{
-            return "<span class='label label-success'>Paid</span>";
-        }
-    }
-}
 if ( ! function_exists('rest_status'))
 {
     function rest_status($type)
     {
-        if($type == 1){
+        if($type == '1'){
             return 'YES';
-        }elseif ($type == 0) {
+        }elseif ($type == '0') {
             return 'NO';
         }else{
-            return 'NA';
+            return 'N/A';
         }
     }   
 }
+
+
 
 
     
